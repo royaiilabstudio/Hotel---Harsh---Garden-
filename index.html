@@ -6,17 +6,152 @@
 
   <title>Harsh Garden | Hotel • Restaurant • Banquet</title>
 
+  <meta name="description"
+        content="Harsh Garden Begusarai — Hotel, Restaurant, Wedding & Banquet Hall with digital food ordering and room booking.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
+
+  <!-- HOME PHOTO STYLE -->
+  <style>
+    .hero-photo-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 620px;
+      margin: auto;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.45),
+        0 0 50px rgba(218,169,88,0.08);
+      background: #111;
+    }
+
+    .hero-photo {
+      display: block;
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.6s ease;
+    }
+
+    .hero-photo-wrap:hover .hero-photo {
+      transform: scale(1.03);
+    }
+
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          to top,
+          rgba(0,0,0,0.72) 0%,
+          rgba(0,0,0,0.05) 48%,
+          rgba(0,0,0,0.02) 100%
+        );
+      pointer-events: none;
+    }
+
+    .photo-caption {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 20px;
+      z-index: 2;
+      padding: 17px 19px;
+      border-radius: 18px;
+      background: rgba(10,10,12,0.65);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+    }
+
+    .photo-caption span {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #e5bd78;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .photo-caption strong {
+      display: block;
+      font-family: "Playfair Display", serif;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    .photo-caption small {
+      display: block;
+      margin-top: 4px;
+      color: rgba(255,255,255,0.72);
+      font-size: 12px;
+    }
+
+    .photo-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 3;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: rgba(8,8,10,0.68);
+      border: 1px solid rgba(255,255,255,0.13);
+      backdrop-filter: blur(12px);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .photo-badge span {
+      color: #e5bd78;
+    }
+
+    @media (max-width: 800px) {
+      .hero-photo {
+        height: 380px;
+      }
+
+      .hero-photo-wrap {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .hero-photo {
+        height: 310px;
+      }
+
+      .photo-caption strong {
+        font-size: 19px;
+      }
+
+      .photo-caption {
+        left: 13px;
+        right: 13px;
+        bottom: 13px;
+      }
+
+      .photo-badge {
+        top: 13px;
+        right: 13px;
+      }
+    }
+  </style>
 </head>
+
 
 <body>
 
-<!-- ================= HEADER ================= -->
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
 <header class="topbar">
 
@@ -31,15 +166,27 @@
 
   </a>
 
-  <button class="menu-btn" id="menuBtn">☰</button>
+
+  <button
+    class="menu-btn"
+    id="menuBtn"
+    aria-label="Open menu">
+    ☰
+  </button>
+
 
   <nav id="nav">
 
     <a href="#home">Home</a>
+
     <a href="#food">Food</a>
+
     <a href="#rooms">Rooms</a>
+
     <a href="#banquet">Wedding Hall</a>
+
     <a href="#qr">Table QR</a>
+
     <a href="#location">Location</a>
 
   </nav>
@@ -47,14 +194,22 @@
 </header>
 
 
-<!-- ================= MAIN ================= -->
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
 
 <main id="home">
 
 
-<!-- ================= HERO ================= -->
+<!-- =========================================================
+     HERO
+========================================================= -->
 
 <section class="hero">
+
+
+  <!-- LEFT CONTENT -->
 
   <div class="hero-copy">
 
@@ -62,28 +217,38 @@
       A COMPLETE DIGITAL EXPERIENCE
     </span>
 
+
     <h1>
       Stay. Dine.<br>
       <span>Celebrate.</span>
     </h1>
 
+
     <p>
-      Welcome to Harsh Garden — experience comfortable hotel rooms,
-      delicious restaurant food, digital ordering and beautiful wedding
-      banquet facilities, all from one website.
+      Welcome to <strong>Harsh Garden</strong> — experience
+      comfortable hotel rooms, delicious restaurant food,
+      digital ordering and beautiful wedding & banquet
+      facilities, all from one website.
     </p>
+
 
     <div class="hero-actions">
 
-      <a href="#services" class="btn primary">
+      <a
+        href="#services"
+        class="btn primary">
         Explore Services →
       </a>
 
-      <a href="#location" class="btn ghost">
+
+      <a
+        href="#location"
+        class="btn ghost">
         Get Directions
       </a>
 
     </div>
+
 
     <div class="address-chip">
       📍 Ward No-2, NH-31 Chowk, near Singhoul,
@@ -93,59 +258,47 @@
   </div>
 
 
-  <!-- 3D HOTEL -->
+
+  <!-- =======================================================
+       REAL HARSH GARDEN PHOTO
+  ======================================================== -->
 
   <div class="hero-visual">
 
-    <div class="hotel-cube">
 
-      <div class="cube-face cube-front">
+    <div class="hero-photo-wrap">
 
-        <div class="hotel-sign">
-          HARSH<br>
-          <b>GARDEN</b>
-        </div>
 
-        <div class="hotel-door"></div>
+      <img
+        src="harsh-garden-front.jpg"
+        alt="Harsh Garden Hotel Begusarai"
+        class="hero-photo"
+        loading="eager"
+      >
 
-        <div class="window w1"></div>
-        <div class="window w2"></div>
-        <div class="window w3"></div>
+
+      <div class="photo-overlay"></div>
+
+
+      <div class="photo-badge">
+        <span>●</span> HARSH GARDEN
+      </div>
+
+
+      <div class="photo-caption">
+
+        <span>HOTEL • RESTAURANT • BANQUET</span>
+
+        <strong>Your Stay. Your Celebration.</strong>
+
+        <small>
+          Begusarai, Bihar
+        </small>
 
       </div>
 
-      <div class="cube-face cube-right"></div>
-
-      <div class="cube-face cube-top"></div>
-
     </div>
 
-
-    <div class="floating-card card-food">
-
-      <span>🍽️</span>
-      <b>Order Food</b>
-      <small>Fast • Digital • Easy</small>
-
-    </div>
-
-
-    <div class="floating-card card-room">
-
-      <span>🛏️</span>
-      <b>Book a Room</b>
-      <small>Check availability</small>
-
-    </div>
-
-
-    <div class="floating-card card-wed">
-
-      <span>💍</span>
-      <b>Book Banquet</b>
-      <small>Plan your event</small>
-
-    </div>
 
   </div>
 
@@ -153,14 +306,24 @@
 
 
 
-<!-- ================= SERVICES ================= -->
+<!-- =========================================================
+     SERVICES
+========================================================= -->
 
-<section class="service-grid section" id="services">
+<section
+  class="service-grid section"
+  id="services">
 
 
-  <button class="service-card featured" data-scroll="#food">
+  <!-- FOOD -->
 
-    <span class="service-icon">🍽️</span>
+  <button
+    class="service-card featured"
+    data-scroll="#food">
+
+    <span class="service-icon">
+      🍽️
+    </span>
 
     <div>
 
@@ -168,24 +331,34 @@
         RESTAURANT
       </span>
 
-      <h2>Order Food</h2>
+      <h2>
+        Order Food
+      </h2>
 
       <p>
-        Browse menu, add items to cart and place
-        a digital food order.
+        Browse menu, add items to cart and
+        place a digital food order.
       </p>
 
     </div>
 
-    <span class="arrow">→</span>
+    <span class="arrow">
+      →
+    </span>
 
   </button>
 
 
 
-  <button class="service-card" data-scroll="#rooms">
+  <!-- ROOMS -->
 
-    <span class="service-icon">🛏️</span>
+  <button
+    class="service-card"
+    data-scroll="#rooms">
+
+    <span class="service-icon">
+      🛏️
+    </span>
 
     <div>
 
@@ -193,7 +366,9 @@
         HOTEL
       </span>
 
-      <h2>Book a Room</h2>
+      <h2>
+        Book a Room
+      </h2>
 
       <p>
         Choose your room, dates and guest details.
@@ -201,15 +376,23 @@
 
     </div>
 
-    <span class="arrow">→</span>
+    <span class="arrow">
+      →
+    </span>
 
   </button>
 
 
 
-  <button class="service-card" data-scroll="#banquet">
+  <!-- BANQUET -->
 
-    <span class="service-icon">💍</span>
+  <button
+    class="service-card"
+    data-scroll="#banquet">
+
+    <span class="service-icon">
+      💍
+    </span>
 
     <div>
 
@@ -217,7 +400,9 @@
         EVENTS
       </span>
 
-      <h2>Wedding Hall</h2>
+      <h2>
+        Wedding Hall
+      </h2>
 
       <p>
         Plan your wedding, reception or family event.
@@ -225,15 +410,23 @@
 
     </div>
 
-    <span class="arrow">→</span>
+    <span class="arrow">
+      →
+    </span>
 
   </button>
 
 
 
-  <button class="service-card" data-scroll="#qr">
+  <!-- QR -->
 
-    <span class="service-icon">▦</span>
+  <button
+    class="service-card"
+    data-scroll="#qr">
+
+    <span class="service-icon">
+      ▦
+    </span>
 
     <div>
 
@@ -241,7 +434,9 @@
         DINE-IN
       </span>
 
-      <h2>Table QR Order</h2>
+      <h2>
+        Table QR Order
+      </h2>
 
       <p>
         Scan your table QR and order directly.
@@ -249,17 +444,25 @@
 
     </div>
 
-    <span class="arrow">→</span>
+    <span class="arrow">
+      →
+    </span>
 
   </button>
+
 
 </section>
 
 
 
-<!-- ================= FOOD ================= -->
+<!-- =========================================================
+     FOOD
+========================================================= -->
 
-<section class="section section-head" id="food">
+<section
+  class="section section-head"
+  id="food">
+
 
   <div>
 
@@ -272,46 +475,73 @@
     </h2>
 
     <p>
-      Demo mode — payment gateway is completely OFF.
+      Select your favourite food, add it to your
+      cart and send your order directly.
     </p>
 
   </div>
 
 
-  <div class="filters" id="foodFilters">
+  <div
+    class="filters"
+    id="foodFilters">
 
-    <button class="filter active" data-category="all">
+
+    <button
+      class="filter active"
+      data-category="all">
       All
     </button>
 
-    <button class="filter" data-category="starter">
+
+    <button
+      class="filter"
+      data-category="starter">
       Starters
     </button>
 
-    <button class="filter" data-category="main">
+
+    <button
+      class="filter"
+      data-category="main">
       Main Course
     </button>
 
-    <button class="filter" data-category="bread">
+
+    <button
+      class="filter"
+      data-category="bread">
       Breads
     </button>
 
-    <button class="filter" data-category="drink">
+
+    <button
+      class="filter"
+      data-category="drink">
       Drinks
     </button>
+
 
   </div>
 
 </section>
 
 
-<section class="food-grid section" id="foodGrid"></section>
+<section
+  class="food-grid section"
+  id="foodGrid">
+</section>
 
 
 
-<!-- ================= ROOMS ================= -->
+<!-- =========================================================
+     ROOMS
+========================================================= -->
 
-<section class="section split-section" id="rooms">
+<section
+  class="section split-section"
+  id="rooms">
+
 
   <div>
 
@@ -319,52 +549,80 @@
       STAY WITH US
     </span>
 
+
     <h2>
       Comfortable rooms,
       designed for a better stay.
     </h2>
 
+
     <p>
       Choose a room according to your requirement.
-      The production version can later connect this
-      section with a real booking database.
+      Send your booking details directly through
+      WhatsApp for quick confirmation.
     </p>
 
 
     <ul class="facility-list">
 
-      <li>✓ Air Conditioning / Fan</li>
+      <li>
+        ✓ Air Conditioning / Fan
+      </li>
 
-      <li>✓ LED Television</li>
+      <li>
+        ✓ LED Television
+      </li>
 
-      <li>✓ Attached Bathroom</li>
+      <li>
+        ✓ Attached Bathroom
+      </li>
 
-      <li>✓ Western Commode</li>
+      <li>
+        ✓ Western Commode
+      </li>
 
-      <li>✓ Hot & Cold Water</li>
+      <li>
+        ✓ Hot & Cold Water
+      </li>
 
-      <li>✓ Wi-Fi</li>
+      <li>
+        ✓ Wi-Fi
+      </li>
 
-      <li>✓ Room Service</li>
+      <li>
+        ✓ Room Service
+      </li>
 
-      <li>✓ Clean Bedding</li>
+      <li>
+        ✓ Clean Bedding
+      </li>
 
     </ul>
 
   </div>
 
 
-  <div class="room-showcase" id="roomCards"></div>
+  <div
+    class="room-showcase"
+    id="roomCards">
+  </div>
+
 
 </section>
 
 
 
-<!-- ================= BANQUET ================= -->
+<!-- =========================================================
+     BANQUET
+========================================================= -->
 
-<section class="section banquet-section" id="banquet">
+<section
+  class="section banquet-section"
+  id="banquet">
+
 
   <div class="section-head">
+
 
     <div>
 
@@ -372,26 +630,36 @@
         CELEBRATE YOUR DAY
       </span>
 
+
       <h2>
         Wedding & Banquet Hall
       </h2>
 
+
       <p>
-        Choose your event date, event type and
-        expected number of guests.
+        Weddings, birthdays, receptions, Sagun,
+        Tilak and family functions.
       </p>
 
     </div>
 
-    <button class="btn primary" id="banquetBtn">
+
+    <button
+      class="btn primary"
+      id="banquetBtn">
+
       Check Booking
+
     </button>
 
   </div>
 
 
+
   <div class="banquet-visuals">
 
+
+    <!-- MAIN -->
 
     <div class="hall-card hall-main">
 
@@ -414,6 +682,9 @@
     </div>
 
 
+
+    <!-- RECEPTION -->
+
     <div class="hall-card hall-side">
 
       <div class="hall-overlay">
@@ -435,7 +706,11 @@
     </div>
 
 
-    <div class="hall-card hall-side second">
+
+    <!-- FAMILY -->
+
+    <div
+      class="hall-card hall-side second">
 
       <div class="hall-overlay">
 
@@ -455,21 +730,30 @@
 
     </div>
 
+
   </div>
 
 </section>
 
 
 
-<!-- ================= QR ORDER ================= -->
+<!-- =========================================================
+     TABLE QR
+========================================================= -->
 
-<section class="section qr-section" id="qr">
+<section
+  class="section qr-section"
+  id="qr">
+
 
   <div class="qr-demo">
 
+
     <div class="fake-qr">
 
-      <span>▦</span>
+      <span>
+        ▦
+      </span>
 
       <small>
         TABLE 07
@@ -477,7 +761,9 @@
 
     </div>
 
+
   </div>
+
 
 
   <div>
@@ -486,9 +772,11 @@
       SMART TABLE ORDERING
     </span>
 
+
     <h2>
       Scan → Select → Send
     </h2>
+
 
     <p>
       Every restaurant table can have a unique QR code.
@@ -496,19 +784,30 @@
       send their order digitally.
     </p>
 
-    <button class="btn primary" id="qrBtn">
+
+    <button
+      class="btn primary"
+      id="qrBtn">
+
       Simulate Table 07 Order
+
     </button>
 
   </div>
+
 
 </section>
 
 
 
-<!-- ================= LOCATION ================= -->
+<!-- =========================================================
+     LOCATION
+========================================================= -->
 
-<section class="section location-section" id="location">
+<section
+  class="section location-section"
+  id="location">
+
 
   <div>
 
@@ -516,25 +815,30 @@
       FIND US
     </span>
 
+
     <h2>
       Come to Harsh Garden
     </h2>
+
 
     <p>
       Ward No-2, NH-31 Chowk, near Singhoul,
       Singhaul Dih, Begusarai, Bihar 851134
     </p>
 
+
     <a
       class="btn primary"
       target="_blank"
       rel="noopener"
-      href="https://www.google.com/maps/search/?api=1&query=Harsh+Garden+Begusarai+Bihar"
-    >
+      href="https://www.google.com/maps/search/?api=1&query=Harsh+Garden+Begusarai+Bihar">
+
       Open Google Maps ↗
+
     </a>
 
   </div>
+
 
 
   <div class="map-placeholder">
@@ -543,9 +847,11 @@
       📍
     </div>
 
+
     <b>
       Harsh Garden
     </b>
+
 
     <small>
       Begusarai, Bihar
@@ -553,15 +859,20 @@
 
   </div>
 
+
 </section>
+
 
 </main>
 
 
 
-<!-- ================= FOOTER ================= -->
+<!-- =========================================================
+     FOOTER
+========================================================= -->
 
 <footer>
+
 
   <div>
 
@@ -575,37 +886,60 @@
 
   </div>
 
+
   <small>
-    Demo Website • Payment Gateway OFF
+    Digital Experience • Online Ordering • Booking
   </small>
+
 
 </footer>
 
 
 
-<!-- ================= TOAST ================= -->
+<!-- =========================================================
+     TOAST
+========================================================= -->
 
-<div class="toast" id="toast"></div>
+<div
+  class="toast"
+  id="toast">
+</div>
 
 
 
-<!-- ================= MODAL ================= -->
+<!-- =========================================================
+     MODAL
+========================================================= -->
 
-<div class="modal" id="modal">
+<div
+  class="modal"
+  id="modal">
+
 
   <div class="modal-box">
 
-    <button class="close" id="closeModal">
+
+    <button
+      class="close"
+      id="closeModal">
+
       ×
+
     </button>
 
+
     <div id="modalContent"></div>
+
 
   </div>
 
 </div>
 
 
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
 
 <script src="script.js"></script>
 
