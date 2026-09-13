@@ -1,7 +1,22 @@
 /* =====================================================
    HARSH GARDEN
-   JAVASCRIPT
+   COMPLETE HOTEL + RESTAURANT BOOKING SYSTEM
+   WhatsApp: 919288104425
 ===================================================== */
+
+
+/* ================= WHATSAPP ================= */
+
+const WHATSAPP_NUMBER = "919288104425";
+
+function sendToWhatsApp(message) {
+
+  const url =
+    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+  window.open(url, "_blank");
+
+}
 
 
 /* ================= FOOD DATABASE ================= */
@@ -107,7 +122,6 @@ const food = [
 ];
 
 
-
 /* ================= ROOMS ================= */
 
 const rooms = [
@@ -116,28 +130,24 @@ const rooms = [
     name: "Deluxe Room",
     price: 2200,
     icon: "🛏️",
-    facilities:
-      "AC • TV • Wi-Fi • Attached Bathroom"
+    facilities: "AC • TV • Wi-Fi • Attached Bathroom"
   },
 
   {
     name: "Premium Room",
     price: 3000,
     icon: "🛋️",
-    facilities:
-      "AC • LED TV • Wi-Fi • Hot Water • Room Service"
+    facilities: "AC • LED TV • Wi-Fi • Hot Water • Room Service"
   },
 
   {
     name: "Family Room",
     price: 3800,
     icon: "🛏️",
-    facilities:
-      "Spacious • TV • Wi-Fi • Attached Bathroom"
+    facilities: "Spacious • TV • Wi-Fi • Attached Bathroom"
   }
 
 ];
-
 
 
 /* ================= CART ================= */
@@ -145,31 +155,77 @@ const rooms = [
 let cart = [];
 
 
-
 const foodGrid =
   document.getElementById("foodGrid");
-
 
 const roomCards =
   document.getElementById("roomCards");
 
-
 const toast =
   document.getElementById("toast");
 
-
 const modal =
   document.getElementById("modal");
-
 
 const modalContent =
   document.getElementById("modalContent");
 
 
+/* ================= HELPERS ================= */
+
+function getElement(id) {
+
+  return document.getElementById(id);
+
+}
+
+
+function showToast(text) {
+
+  if (!toast) return;
+
+  toast.textContent = text;
+
+  toast.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(() => {
+
+    toast.classList.remove("show");
+
+  }, 3200);
+
+}
+
+
+function openModal() {
+
+  if (modal) {
+
+    modal.classList.add("show");
+
+  }
+
+}
+
+
+function closeModal() {
+
+  if (modal) {
+
+    modal.classList.remove("show");
+
+  }
+
+}
+
 
 /* ================= FOOD RENDER ================= */
 
 function renderFood(category = "all") {
+
+  if (!foodGrid) return;
 
   foodGrid.innerHTML = food
 
@@ -181,6 +237,9 @@ function renderFood(category = "all") {
     })
 
     .map(item => {
+
+      const index =
+        food.indexOf(item);
 
       return `
 
@@ -212,11 +271,14 @@ function renderFood(category = "all") {
                 ₹${item.price}
               </span>
 
+
               <button
                 class="add"
-                onclick="addToCart(${food.indexOf(item)})"
+                onclick="addToCart(${index})"
               >
+
                 + Add
+
               </button>
 
             </div>
@@ -234,14 +296,451 @@ function renderFood(category = "all") {
 }
 
 
+/* ================= CART COUNT ================= */
+
+function getCartCount() {
+
+  return cart.reduce(
+
+    (sum, item) =>
+      sum + item.qty,
+
+    0
+
+  );
+
+}
+
+
+/* ================= CART TOTAL ================= */
+
+function getCartTotal() {
+
+  return cart.reduce(
+
+    (sum, item) =>
+      sum + item.price * item.qty,
+
+    0
+
+  );
+
+}
+
+
+/* ================= ADD TO CART ================= */
+
+function addToCart(index) {
+
+  const item =
+    food[index];
+
+  if (!item) return;
+
+
+  const existing =
+    cart.find(
+      x => x.name === item.name
+    );
+
+
+  if (existing) {
+
+    existing.qty++;
+
+  }
+
+  else {
+
+    cart.push({
+
+      ...item,
+
+      qty: 1
+
+    });
+
+  }
+
+
+  showToast(
+
+    `${item.name} added • ` +
+
+    `${getCartCount()} item(s) in cart`
+
+  );
+
+
+  openCart();
+
+}
+
+
+/* ================= PLUS / MINUS ================= */
+
+function changeCartQty(index, change) {
+
+  if (!cart[index]) return;
+
+
+  cart[index].qty += change;
+
+
+  if (cart[index].qty <= 0) {
+
+    cart.splice(index, 1);
+
+  }
+
+
+  if (!cart.length) {
+
+    closeModal();
+
+    showToast(
+      "Your cart is empty."
+    );
+
+    return;
+
+  }
+
+
+  openCart();
+
+}
+
+
+/* ================= REMOVE ITEM ================= */
+
+function removeCartItem(index) {
+
+  if (!cart[index]) return;
+
+
+  const itemName =
+    cart[index].name;
+
+
+  cart.splice(index, 1);
+
+
+  if (!cart.length) {
+
+    closeModal();
+
+    showToast(
+      `${itemName} removed. Cart is empty.`
+    );
+
+    return;
+
+  }
+
+
+  openCart();
+
+}
+
+
+/* ================= OPEN CART ================= */
+
+function openCart() {
+
+  if (!cart.length) {
+
+    showToast(
+      "Your cart is empty."
+    );
+
+    return;
+
+  }
+
+
+  const total =
+    getCartTotal();
+
+
+  modalContent.innerHTML = `
+
+    <span class="eyebrow">
+      FOOD ORDER
+    </span>
+
+
+    <h2>
+      Your Order
+    </h2>
+
+
+    <div class="cart-items">
+
+      ${cart.map((item, index) => `
+
+        <div
+          class="cart-line"
+          style="
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;
+            margin:12px 0;
+          "
+        >
+
+          <div>
+
+            <strong>
+              ${item.name}
+            </strong>
+
+            <div
+              style="
+                font-size:.9rem;
+                opacity:.75;
+              "
+            >
+
+              ₹${item.price} each
+
+            </div>
+
+          </div>
+
+
+          <div
+            style="
+              display:flex;
+              align-items:center;
+              gap:7px;
+            "
+          >
+
+            <button
+              type="button"
+              class="add"
+              onclick="changeCartQty(${index}, -1)"
+            >
+              −
+            </button>
+
+
+            <b
+              style="
+                min-width:22px;
+                text-align:center;
+              "
+            >
+              ${item.qty}
+            </b>
+
+
+            <button
+              type="button"
+              class="add"
+              onclick="changeCartQty(${index}, 1)"
+            >
+              +
+            </button>
+
+
+            <button
+              type="button"
+              class="add"
+              onclick="removeCartItem(${index})"
+            >
+              ✕
+            </button>
+
+          </div>
+
+
+          <b>
+            ₹${item.price * item.qty}
+          </b>
+
+        </div>
+
+      `).join("")}
+
+    </div>
+
+
+    <div
+      class="total"
+      style="
+        display:flex;
+        justify-content:space-between;
+        margin-top:15px;
+      "
+    >
+
+      <strong>
+        Total
+      </strong>
+
+      <strong>
+        ₹${total}
+      </strong>
+
+    </div>
+
+
+    <div class="demo-note">
+
+      Payment gateway is OFF.
+
+      Your order request will be sent
+      to Harsh Garden on WhatsApp.
+
+    </div>
+
+
+    <div class="form-grid">
+
+
+      <input
+        id="custName"
+        class="full"
+        placeholder="Customer Name *"
+      >
+
+
+      <input
+        id="custMobile"
+        placeholder="Mobile Number *"
+        inputmode="numeric"
+      >
+
+
+      <input
+        id="custAddress"
+        class="full"
+        placeholder="Room / Table / Delivery Address *"
+      >
+
+
+    </div>
+
+
+    <button
+      class="btn primary"
+      style="
+        width:100%;
+        margin-top:15px
+      "
+      onclick="placeDemoOrder()"
+    >
+
+      📲 Order on WhatsApp
+
+    </button>
+
+  `;
+
+
+  openModal();
+
+}
+
+
+/* ================= FOOD ORDER ================= */
+
+function placeDemoOrder() {
+
+  const name =
+    getElement("custName")?.value.trim();
+
+  const mobile =
+    getElement("custMobile")?.value.trim();
+
+  const address =
+    getElement("custAddress")?.value.trim();
+
+
+  if (
+    !name ||
+    !mobile ||
+    !address
+  ) {
+
+    showToast(
+      "Please fill all required details."
+    );
+
+    return;
+
+  }
+
+
+  const total =
+    getCartTotal();
+
+
+  let message =
+
+`🍽️ *HARSH GARDEN - NEW FOOD ORDER*
+
+👤 Customer Name: ${name}
+
+📱 Mobile: ${mobile}
+
+📍 Room / Table / Address:
+${address}
+
+🛒 *ORDER DETAILS*
+
+`;
+
+
+  cart.forEach(item => {
+
+    message +=
+
+      `• ${item.name} × ${item.qty} = ₹${item.price * item.qty}\n`;
+
+  });
+
+
+  message +=
+
+`
+💰 *TOTAL AMOUNT: ₹${total}*
+
+Please confirm my food order.
+
+Thank you!
+`;
+
+
+  sendToWhatsApp(message);
+
+
+  cart = [];
+
+
+  closeModal();
+
+
+  showToast(
+    "✓ Order details opened in WhatsApp."
+  );
+
+}
+
 
 /* ================= ROOM RENDER ================= */
 
 function renderRooms() {
 
-  roomCards.innerHTML = rooms
+  if (!roomCards) return;
 
-    .map((room, index) => {
+
+  roomCards.innerHTML =
+
+    rooms.map((room, index) => {
 
       return `
 
@@ -261,6 +760,7 @@ function renderRooms() {
             <h3>
               ${room.name}
             </h3>
+
 
             <small>
               ${room.facilities}
@@ -284,7 +784,9 @@ function renderRooms() {
                 class="add"
                 onclick="openRoom(${index})"
               >
+
                 Book
+
               </button>
 
             </div>
@@ -302,248 +804,15 @@ function renderRooms() {
 }
 
 
-
-/* ================= ADD TO CART ================= */
-
-function addToCart(index) {
-
-  const item = food[index];
-
-
-  const existing =
-    cart.find(
-      x => x.name === item.name
-    );
-
-
-  if (existing) {
-
-    existing.qty++;
-
-  } else {
-
-    cart.push({
-
-      ...item,
-
-      qty: 1
-
-    });
-
-  }
-
-
-  showToast(
-
-    `${item.name} added • ` +
-
-    `${cart.reduce(
-      (sum, item) =>
-        sum + item.qty,
-      0
-    )} item(s) in cart`
-
-  );
-
-
-
-  /* Demo shortcut */
-
-  setTimeout(() => {
-
-    if (cart.length > 0) {
-
-      openCart();
-
-    }
-
-  }, 500);
-
-}
-
-
-
-/* ================= CART ================= */
-
-function openCart() {
-
-  if (!cart.length) {
-
-    showToast(
-      "Your cart is empty."
-    );
-
-    return;
-
-  }
-
-
-  const total =
-    cart.reduce(
-      (sum, item) =>
-        sum + item.price * item.qty,
-      0
-    );
-
-
-  modalContent.innerHTML = `
-
-    <span class="eyebrow">
-      DEMO FOOD ORDER
-    </span>
-
-
-    <h2>
-      Your Order
-    </h2>
-
-
-    ${
-
-      cart.map(item => `
-
-        <div class="cart-line">
-
-          <span>
-            ${item.name} × ${item.qty}
-          </span>
-
-          <b>
-            ₹${item.price * item.qty}
-          </b>
-
-        </div>
-
-      `).join("")
-
-    }
-
-
-    <div class="total">
-
-      <span>
-        Total
-      </span>
-
-      <span>
-        ₹${total}
-      </span>
-
-    </div>
-
-
-    <div class="demo-note">
-
-      Payment gateway is OFF.
-
-      This is only a demo order flow.
-
-      No real payment will be taken.
-
-    </div>
-
-
-    <div class="form-grid">
-
-      <input
-        id="custName"
-        class="full"
-        placeholder="Customer Name *"
-      >
-
-
-      <input
-        id="custMobile"
-        placeholder="Mobile Number *"
-        inputmode="numeric"
-      >
-
-
-      <input
-        id="custAddress"
-        class="full"
-        placeholder="Room / Table / Delivery Address *"
-      >
-
-    </div>
-
-
-    <button
-      class="btn primary"
-      style="width:100%;margin-top:15px"
-      onclick="placeDemoOrder()"
-    >
-
-      Place Demo Order
-
-    </button>
-
-  `;
-
-
-  openModal();
-
-}
-
-
-
-/* ================= PLACE ORDER ================= */
-
-function placeDemoOrder() {
-
-  const name =
-    document.getElementById(
-      "custName"
-    ).value.trim();
-
-
-  const mobile =
-    document.getElementById(
-      "custMobile"
-    ).value.trim();
-
-
-  const address =
-    document.getElementById(
-      "custAddress"
-    ).value.trim();
-
-
-  if (
-    !name ||
-    !mobile ||
-    !address
-  ) {
-
-    showToast(
-      "Please fill all required details."
-    );
-
-    return;
-
-  }
-
-
-  closeModal();
-
-
-  showToast(
-    "✓ Demo order generated successfully. Payment was NOT taken."
-  );
-
-
-  cart = [];
-
-}
-
-
-
-/* ================= ROOM BOOKING ================= */
+/* ================= ROOM BOOKING FORM ================= */
 
 function openRoom(index) {
 
   const room =
     rooms[index];
+
+
+  if (!room) return;
 
 
   modalContent.innerHTML = `
@@ -565,18 +834,22 @@ function openRoom(index) {
 
     <div class="demo-note">
 
-      Payment gateway is OFF.
+      Select your exact date,
+      time and shift.
 
-      This demo only creates a booking request.
+      Your booking request will be
+      sent to Harsh Garden on WhatsApp.
 
     </div>
 
 
     <div class="form-grid">
 
+
       <input
         id="roomName"
-        placeholder="Guest Name *"
+        class="full"
+        placeholder="Guest Full Name *"
       >
 
 
@@ -588,47 +861,94 @@ function openRoom(index) {
 
 
       <input
+        id="roomGuests"
+        type="number"
+        min="1"
+        placeholder="Number of Guests *"
+      >
+
+
+      <select id="roomShift">
+
+        <option value="">
+          Select Shift *
+        </option>
+
+        <option>
+          Day Shift
+        </option>
+
+        <option>
+          Night Shift
+        </option>
+
+        <option>
+          24 Hours
+        </option>
+
+      </select>
+
+
+      <input
         type="date"
-        id="checkIn"
+        id="checkInDate"
       >
 
 
       <input
         type="date"
-        id="checkOut"
+        id="checkOutDate"
       >
 
 
-      <select id="guests">
+      <input
+        type="time"
+        id="roomStartTime"
+      >
 
-        <option>
-          1 Guest
-        </option>
 
-        <option>
-          2 Guests
-        </option>
+      <input
+        type="time"
+        id="roomEndTime"
+      >
 
-        <option>
-          3 Guests
-        </option>
 
-        <option>
-          4+ Guests
-        </option>
+      <input
+        id="roomHours"
+        type="number"
+        min="1"
+        placeholder="Required Hours *"
+      >
 
-      </select>
+
+      <input
+        id="roomAddress"
+        class="full"
+        placeholder="Customer Full Address *"
+      >
+
+
+      <textarea
+        id="roomNote"
+        class="full"
+        rows="3"
+        placeholder="Special Request (optional)"
+      ></textarea>
+
 
     </div>
 
 
     <button
       class="btn primary"
-      style="width:100%;margin-top:15px"
+      style="
+        width:100%;
+        margin-top:15px
+      "
       onclick="submitRoom('${room.name}')"
     >
 
-      Send Booking Request
+      📲 Book Room on WhatsApp
 
     </button>
 
@@ -640,44 +960,59 @@ function openRoom(index) {
 }
 
 
-
 /* ================= SUBMIT ROOM ================= */
 
 function submitRoom(roomName) {
 
   const name =
-    document.getElementById(
-      "roomName"
-    ).value.trim();
-
+    getElement("roomName")?.value.trim();
 
   const mobile =
-    document.getElementById(
-      "roomMobile"
-    ).value.trim();
+    getElement("roomMobile")?.value.trim();
 
+  const guests =
+    getElement("roomGuests")?.value.trim();
 
-  const checkIn =
-    document.getElementById(
-      "checkIn"
-    ).value;
+  const shift =
+    getElement("roomShift")?.value;
 
+  const checkInDate =
+    getElement("checkInDate")?.value;
 
-  const checkOut =
-    document.getElementById(
-      "checkOut"
-    ).value;
+  const checkOutDate =
+    getElement("checkOutDate")?.value;
+
+  const startTime =
+    getElement("roomStartTime")?.value;
+
+  const endTime =
+    getElement("roomEndTime")?.value;
+
+  const hours =
+    getElement("roomHours")?.value.trim();
+
+  const address =
+    getElement("roomAddress")?.value.trim();
+
+  const note =
+    getElement("roomNote")?.value.trim();
 
 
   if (
     !name ||
     !mobile ||
-    !checkIn ||
-    !checkOut
+    !guests ||
+    !shift ||
+    !checkInDate ||
+    !checkOutDate ||
+    !startTime ||
+    !endTime ||
+    !hours ||
+    !address
   ) {
 
     showToast(
-      "Please fill all required booking details."
+      "Please fill all required room booking details."
     );
 
     return;
@@ -685,25 +1020,83 @@ function submitRoom(roomName) {
   }
 
 
+  const room =
+    rooms.find(
+      r => r.name === roomName
+    );
+
+
+  const message =
+
+`🛏️ *HARSH GARDEN - ROOM BOOKING REQUEST*
+
+🏨 Room Type:
+${roomName}
+
+👤 Guest Name:
+${name}
+
+📱 Mobile:
+${mobile}
+
+👥 Number of Guests:
+${guests}
+
+📅 Check-in Date:
+${checkInDate}
+
+📅 Check-out Date:
+${checkOutDate}
+
+🕐 Start Time:
+${startTime}
+
+🕐 End Time:
+${endTime}
+
+⏱️ Required Hours:
+${hours}
+
+🌞 Shift:
+${shift}
+
+📍 Customer Address:
+${address}
+
+📝 Special Request:
+${note || "None"}
+
+💰 Listed Room Rate:
+₹${room ? room.price : "N/A"} / night
+
+Please confirm room availability,
+price and booking.
+
+Thank you!
+`;
+
+
+  sendToWhatsApp(message);
+
+
   closeModal();
 
 
   showToast(
-    `✓ ${roomName} booking request created for demo.`
+    "✓ Room booking opened in WhatsApp."
   );
 
 }
 
 
-
-/* ================= BANQUET ================= */
+/* ================= BANQUET BOOKING ================= */
 
 function openBanquet() {
 
   modalContent.innerHTML = `
 
     <span class="eyebrow">
-      BANQUET BOOKING
+      BANQUET / WEDDING HALL
     </span>
 
 
@@ -714,46 +1107,63 @@ function openBanquet() {
 
     <p>
 
-      Choose your event date and
-      event requirements.
+      Tell us about your event
+      and send the complete request
+      to Harsh Garden on WhatsApp.
 
     </p>
 
 
     <div class="demo-note">
 
-      Payment gateway is OFF.
-
-      This demo only creates a booking request.
+      Choose your event purpose,
+      date, timing and guest count.
 
     </div>
 
 
     <div class="form-grid">
 
+
       <input
         id="eventName"
-        placeholder="Name *"
+        placeholder="Customer Full Name *"
       >
 
 
       <input
         id="eventMobile"
-        placeholder="Mobile *"
+        placeholder="Mobile Number *"
         inputmode="numeric"
       >
 
 
       <input
-        type="date"
-        id="eventDate"
+        id="eventAddress"
+        class="full"
+        placeholder="Full Customer Address *"
       >
 
 
-      <select id="eventType">
+      <select
+        id="eventPurpose"
+        class="full"
+      >
+
+        <option value="">
+          Select Event Purpose *
+        </option>
 
         <option>
           Wedding
+        </option>
+
+        <option>
+          Birthday Party
+        </option>
+
+        <option>
+          Sagun / Tilak
         </option>
 
         <option>
@@ -761,11 +1171,15 @@ function openBanquet() {
         </option>
 
         <option>
-          Birthday
+          Engagement
         </option>
 
         <option>
           Anniversary
+        </option>
+
+        <option>
+          Corporate Event
         </option>
 
         <option>
@@ -776,23 +1190,90 @@ function openBanquet() {
 
 
       <input
-        id="guestCount"
-        class="full"
+        type="date"
+        id="eventDate"
+      >
+
+
+      <input
         type="number"
+        id="guestCount"
         min="1"
         placeholder="Expected Guests *"
       >
+
+
+      <input
+        type="time"
+        id="eventStartTime"
+      >
+
+
+      <input
+        type="time"
+        id="eventEndTime"
+      >
+
+
+      <select id="eventShift">
+
+        <option value="">
+          Select Shift *
+        </option>
+
+        <option>
+          Day Shift
+        </option>
+
+        <option>
+          Evening Shift
+        </option>
+
+        <option>
+          Night Shift
+        </option>
+
+      </select>
+
+
+      <select id="hallType">
+
+        <option>
+          Wedding Hall
+        </option>
+
+        <option>
+          Birthday / Party Hall
+        </option>
+
+        <option>
+          Banquet Hall
+        </option>
+
+      </select>
+
+
+      <textarea
+        id="eventRequirements"
+        class="full"
+        rows="4"
+        placeholder="Special Requirements: Decoration, Catering, Stage, DJ, Seating etc."
+      ></textarea>
+
 
     </div>
 
 
     <button
       class="btn primary"
-      style="width:100%;margin-top:15px"
+      style="
+        width:100%;
+        margin-top:15px
+      "
       onclick="submitBanquet()"
     >
 
-      Send Banquet Request
+      📲 Send Banquet Request on WhatsApp
 
     </button>
 
@@ -804,38 +1285,58 @@ function openBanquet() {
 }
 
 
-
 /* ================= SUBMIT BANQUET ================= */
 
 function submitBanquet() {
 
-  const fields = [
+  const name =
+    getElement("eventName")?.value.trim();
 
-    "eventName",
+  const mobile =
+    getElement("eventMobile")?.value.trim();
 
-    "eventMobile",
+  const address =
+    getElement("eventAddress")?.value.trim();
 
-    "eventDate",
+  const purpose =
+    getElement("eventPurpose")?.value;
 
-    "guestCount"
+  const eventDate =
+    getElement("eventDate")?.value;
 
-  ];
+  const guestCount =
+    getElement("guestCount")?.value.trim();
+
+  const startTime =
+    getElement("eventStartTime")?.value;
+
+  const endTime =
+    getElement("eventEndTime")?.value;
+
+  const shift =
+    getElement("eventShift")?.value;
+
+  const hallType =
+    getElement("hallType")?.value;
+
+  const requirements =
+    getElement("eventRequirements")?.value.trim();
 
 
-  const incomplete =
-    fields.some(
-      id =>
-        !document
-          .getElementById(id)
-          .value
-          .trim()
-    );
-
-
-  if (incomplete) {
+  if (
+    !name ||
+    !mobile ||
+    !address ||
+    !purpose ||
+    !eventDate ||
+    !guestCount ||
+    !startTime ||
+    !endTime ||
+    !shift
+  ) {
 
     showToast(
-      "Please complete the required details."
+      "Please complete all required banquet details."
     );
 
     return;
@@ -843,60 +1344,137 @@ function submitBanquet() {
   }
 
 
+  const message =
+
+`🏛️ *HARSH GARDEN - BANQUET BOOKING REQUEST*
+
+👤 Customer Name:
+${name}
+
+📱 Mobile:
+${mobile}
+
+📍 Customer Address:
+${address}
+
+🎉 Event Purpose:
+${purpose}
+
+🏛️ Hall Type:
+${hallType}
+
+📅 Event Date:
+${eventDate}
+
+🕐 Start Time:
+${startTime}
+
+🕐 End Time:
+${endTime}
+
+🌙 Shift:
+${shift}
+
+👥 Expected Guests:
+${guestCount}
+
+📝 Special Requirements:
+${requirements || "None"}
+
+Please confirm hall availability,
+price and booking.
+
+Thank you!
+`;
+
+
+  sendToWhatsApp(message);
+
+
   closeModal();
 
 
   showToast(
-    "✓ Banquet booking request created for demo."
+    "✓ Banquet request opened in WhatsApp."
   );
 
 }
 
 
+/* ================= QR TABLE SYSTEM ================= */
 
-/* ================= QR ================= */
-
-function simulateQR() {
+function simulateQR(tableNumber = "TABLE 07") {
 
   modalContent.innerHTML = `
 
     <span class="eyebrow">
-      TABLE 07
+      SMART TABLE QR
     </span>
 
 
     <h2>
-      Welcome to Harsh Garden
+      ${tableNumber}
     </h2>
 
 
-    <p>
+    <div
+      style="
+        margin:20px auto;
+        width:210px;
+        height:210px;
+        border-radius:24px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:
+        repeating-linear-gradient(
+          45deg,
+          #111 0 6px,
+          #fff 6px 12px
+        );
+        box-shadow:
+        0 20px 45px rgba(0,0,0,.25);
+      "
+    >
 
-      Your table number can be carried
-      through the QR URL in the production
-      version.
+      <div
+        style="
+          width:155px;
+          height:155px;
+          background:#fff;
+          border-radius:12px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:72px;
+        "
+      >
 
-    </p>
+        ▦
 
-
-    <div class="demo-note">
-
-      Demo table detected:
-
-      <b>
-        TABLE 07
-      </b>
-
-      <br><br>
-
-      Payment gateway is OFF.
+      </div>
 
     </div>
 
 
+    <p>
+
+      Scan the real QR code on the table
+      to open the food menu.
+
+    </p>
+
+
     <button
       class="btn primary"
-      onclick="closeModal(); document.querySelector('#food').scrollIntoView({behavior:'smooth'})"
+      onclick="
+        closeModal();
+        document
+          .querySelector('#food')
+          ?.scrollIntoView({
+            behavior:'smooth'
+          })
+      "
     >
 
       Browse Menu
@@ -909,59 +1487,6 @@ function simulateQR() {
   openModal();
 
 }
-
-
-
-/* ================= MODAL ================= */
-
-function openModal() {
-
-  modal.classList.add(
-    "show"
-  );
-
-}
-
-
-function closeModal() {
-
-  modal.classList.remove(
-    "show"
-  );
-
-}
-
-
-
-/* ================= TOAST ================= */
-
-function showToast(text) {
-
-  toast.textContent =
-    text;
-
-
-  toast.classList.add(
-    "show"
-  );
-
-
-  clearTimeout(
-    window.toastTimer
-  );
-
-
-  window.toastTimer =
-    setTimeout(() => {
-
-      toast.classList.remove(
-        "show"
-      );
-
-    }, 3200);
-
-}
-
 
 
 /* ================= FILTER BUTTONS ================= */
@@ -1000,7 +1525,6 @@ document
   });
 
 
-
 /* ================= SERVICE SCROLL ================= */
 
 document
@@ -1020,7 +1544,7 @@ document
         if (target) {
 
           target.scrollIntoView({
-            behavior: "smooth"
+            behavior:"smooth"
           });
 
         }
@@ -1031,87 +1555,119 @@ document
   });
 
 
-
 /* ================= BANQUET BUTTON ================= */
 
-document
-  .getElementById(
-    "banquetBtn"
-  )
-  .addEventListener(
+const banquetBtn =
+  getElement("banquetBtn");
+
+
+if (banquetBtn) {
+
+  banquetBtn.addEventListener(
     "click",
     openBanquet
   );
 
+}
 
 
 /* ================= QR BUTTON ================= */
 
-document
-  .getElementById(
-    "qrBtn"
-  )
-  .addEventListener(
+const qrBtn =
+  getElement("qrBtn");
+
+
+if (qrBtn) {
+
+  qrBtn.addEventListener(
     "click",
-    simulateQR
+    () => {
+
+      simulateQR("TABLE 07");
+
+    }
   );
 
+}
 
 
 /* ================= CLOSE MODAL ================= */
 
-document
-  .getElementById(
-    "closeModal"
-  )
-  .addEventListener(
+const closeModalButton =
+  getElement("closeModal");
+
+
+if (closeModalButton) {
+
+  closeModalButton.addEventListener(
     "click",
     closeModal
   );
 
+}
 
-modal.addEventListener(
-  "click",
-  event => {
 
-    if (
-      event.target === modal
-    ) {
+if (modal) {
 
-      closeModal();
+  modal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target === modal
+      ) {
+
+        closeModal();
+
+      }
 
     }
+  );
 
-  }
-);
+}
 
+
+/* ================= CART BUTTON ================= */
+
+document
+  .querySelectorAll("[data-cart]")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      openCart
+    );
+
+  });
 
 
 /* ================= MOBILE MENU ================= */
 
 const menuBtn =
-  document.getElementById(
-    "menuBtn"
-  );
+  getElement("menuBtn");
 
 
 const nav =
-  document.getElementById(
-    "nav"
+  getElement("nav");
+
+
+if (
+  menuBtn &&
+  nav
+) {
+
+  menuBtn.addEventListener(
+    "click",
+    () => {
+
+      nav.classList.toggle(
+        "open"
+      );
+
+    }
   );
 
-
-menuBtn.addEventListener(
-  "click",
-  () => {
-
-    nav.classList.toggle(
-      "open"
-    );
-
-  }
-);
-
+}
 
 
 /* ================= ESCAPE ================= */
@@ -1132,48 +1688,74 @@ document.addEventListener(
 );
 
 
+/* ================= HERO FOOD ================= */
 
-/* ================= HERO SHORTCUTS ================= */
+const cardFood =
+  document.querySelector(
+    ".card-food"
+  );
 
-document
-  .querySelector(".card-food")
-  .addEventListener(
+
+if (cardFood) {
+
+  cardFood.addEventListener(
     "click",
     () => {
 
       document
         .querySelector("#food")
-        .scrollIntoView({
-          behavior: "smooth"
+        ?.scrollIntoView({
+          behavior:"smooth"
         });
 
     }
   );
 
+}
 
-document
-  .querySelector(".card-room")
-  .addEventListener(
+
+/* ================= HERO ROOM ================= */
+
+const cardRoom =
+  document.querySelector(
+    ".card-room"
+  );
+
+
+if (cardRoom) {
+
+  cardRoom.addEventListener(
     "click",
     () => {
 
       document
         .querySelector("#rooms")
-        .scrollIntoView({
-          behavior: "smooth"
+        ?.scrollIntoView({
+          behavior:"smooth"
         });
 
     }
   );
 
+}
 
-document
-  .querySelector(".card-wed")
-  .addEventListener(
+
+/* ================= HERO WEDDING ================= */
+
+const cardWed =
+  document.querySelector(
+    ".card-wed"
+  );
+
+
+if (cardWed) {
+
+  cardWed.addEventListener(
     "click",
     openBanquet
   );
 
+}
 
 
 /* ================= INITIALIZE ================= */
@@ -1181,3 +1763,8 @@ document
 renderFood();
 
 renderRooms();
+
+
+/* =====================================================
+   END OF HARSH GARDEN JAVASCRIPT
+===================================================== */
