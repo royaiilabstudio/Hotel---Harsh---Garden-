@@ -4,23 +4,13 @@
    WhatsApp: 919288104425
 ===================================================== */
 
-
-/* ================= WHATSAPP ================= */
-
 const WHATSAPP_NUMBER = "919288104425";
 
-function sendToWhatsApp(message) {
-  const url =
-    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-
-  window.open(url, "_blank");
-}
-
-
-/* ================= FOOD DATABASE ================= */
+/* =====================================================
+   FOOD DATABASE
+===================================================== */
 
 const food = [
-
   {
     name: "Paneer Tikka",
     category: "starter",
@@ -28,7 +18,6 @@ const food = [
     icon: "🍢",
     desc: "Smoky cottage cheese with spices"
   },
-
   {
     name: "Chicken Tikka",
     category: "starter",
@@ -36,7 +25,6 @@ const food = [
     icon: "🍗",
     desc: "Char-grilled chicken, house marinade"
   },
-
   {
     name: "Veg Biryani",
     category: "main",
@@ -44,7 +32,6 @@ const food = [
     icon: "🍛",
     desc: "Fragrant basmati rice & vegetables"
   },
-
   {
     name: "Chicken Biryani",
     category: "main",
@@ -52,7 +39,6 @@ const food = [
     icon: "🍗",
     desc: "Aromatic biryani with tender chicken"
   },
-
   {
     name: "Butter Naan",
     category: "bread",
@@ -60,7 +46,6 @@ const food = [
     icon: "🫓",
     desc: "Soft tandoori naan with butter"
   },
-
   {
     name: "Garlic Naan",
     category: "bread",
@@ -68,7 +53,6 @@ const food = [
     icon: "🫓",
     desc: "Garlic, coriander & butter"
   },
-
   {
     name: "Masala Dosa",
     category: "main",
@@ -76,7 +60,6 @@ const food = [
     icon: "🥞",
     desc: "Crispy dosa with sambar & chutney"
   },
-
   {
     name: "Cold Drink",
     category: "drink",
@@ -84,7 +67,6 @@ const food = [
     icon: "🥤",
     desc: "Chilled soft drink"
   },
-
   {
     name: "Fresh Lime",
     category: "drink",
@@ -92,7 +74,6 @@ const food = [
     icon: "🍋",
     desc: "Fresh lime, mint & soda"
   },
-
   {
     name: "Dal Makhani",
     category: "main",
@@ -100,7 +81,6 @@ const food = [
     icon: "🍲",
     desc: "Slow-cooked creamy black lentils"
   },
-
   {
     name: "French Fries",
     category: "starter",
@@ -108,7 +88,6 @@ const food = [
     icon: "🍟",
     desc: "Crispy salted fries"
   },
-
   {
     name: "Ice Cream",
     category: "drink",
@@ -116,62 +95,82 @@ const food = [
     icon: "🍨",
     desc: "Chef's assorted scoop"
   }
-
 ];
 
-
-/* ================= ROOMS ================= */
+/* =====================================================
+   ROOMS
+===================================================== */
 
 const rooms = [
-
   {
     name: "Deluxe Room",
     price: 2200,
     icon: "🛏️",
     facilities: "AC • TV • Wi-Fi • Attached Bathroom"
   },
-
   {
     name: "Premium Room",
     price: 3000,
     icon: "🛋️",
     facilities: "AC • LED TV • Wi-Fi • Hot Water • Room Service"
   },
-
   {
     name: "Family Room",
     price: 3800,
     icon: "🛏️",
     facilities: "Spacious • TV • Wi-Fi • Attached Bathroom"
   }
-
 ];
 
-
-/* ================= CART ================= */
+/* =====================================================
+   CART
+===================================================== */
 
 let cart = [];
 
-
-/* ================= ELEMENTS ================= */
+/* =====================================================
+   DOM ELEMENTS
+===================================================== */
 
 const foodGrid = document.getElementById("foodGrid");
-
 const roomCards = document.getElementById("roomCards");
-
 const toast = document.getElementById("toast");
-
 const modal = document.getElementById("modal");
-
 const modalContent = document.getElementById("modalContent");
 
+/* =====================================================
+   WHATSAPP
+===================================================== */
 
-/* ================= HELPERS ================= */
+function sendToWhatsApp(message) {
 
-function getElement(id) {
+  const url =
+    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+  window.open(url, "_blank");
+}
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function safe(id) {
   return document.getElementById(id);
 }
 
+function esc(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/* =====================================================
+   TOAST
+===================================================== */
 
 function showToast(text) {
 
@@ -184,68 +183,59 @@ function showToast(text) {
   clearTimeout(window.toastTimer);
 
   window.toastTimer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3200);
 
+    toast.classList.remove("show");
+
+  }, 3200);
 }
 
+/* =====================================================
+   MODAL
+===================================================== */
 
 function openModal() {
 
   if (modal) {
     modal.classList.add("show");
   }
-
 }
-
 
 function closeModal() {
 
   if (modal) {
     modal.classList.remove("show");
   }
-
 }
 
-
-/* ================= FOOD RENDER ================= */
+/* =====================================================
+   FOOD RENDER
+===================================================== */
 
 function renderFood(category = "all") {
 
   if (!foodGrid) return;
 
   foodGrid.innerHTML = food
-    .filter(item => {
-
-      return category === "all" ||
-             item.category === category;
-
-    })
+    .filter(item =>
+      category === "all" ||
+      item.category === category
+    )
     .map(item => {
 
       const index = food.indexOf(item);
 
       return `
-
         <article class="food-card">
 
           <div class="food-art">
-
-            <span>
-              ${item.icon}
-            </span>
-
+            <span>${item.icon}</span>
           </div>
 
           <div class="food-info">
 
-            <h3>
-              ${item.name}
-            </h3>
+            <h3>${esc(item.name)}</h3>
 
-            <p>
-              ${item.desc}
-            </p>
+            <p>${esc(item.desc)}</p>
 
             <div class="food-bottom">
 
@@ -254,6 +244,7 @@ function renderFood(category = "all") {
               </span>
 
               <button
+                type="button"
                 class="add"
                 onclick="addToCart(${index})"
               >
@@ -265,16 +256,15 @@ function renderFood(category = "all") {
           </div>
 
         </article>
-
       `;
 
     })
     .join("");
-
 }
 
-
-/* ================= CART COUNT ================= */
+/* =====================================================
+   CART COUNT
+===================================================== */
 
 function getCartCount() {
 
@@ -282,23 +272,24 @@ function getCartCount() {
     (sum, item) => sum + item.qty,
     0
   );
-
 }
 
-
-/* ================= CART TOTAL ================= */
+/* =====================================================
+   CART TOTAL
+===================================================== */
 
 function getCartTotal() {
 
   return cart.reduce(
-    (sum, item) => sum + item.price * item.qty,
+    (sum, item) =>
+      sum + (item.price * item.qty),
     0
   );
-
 }
 
-
-/* ================= ADD TO CART ================= */
+/* =====================================================
+   ADD TO CART
+===================================================== */
 
 function addToCart(index) {
 
@@ -306,9 +297,8 @@ function addToCart(index) {
 
   if (!item) return;
 
-  const existing = cart.find(
-    x => x.name === item.name
-  );
+  const existing =
+    cart.find(x => x.name === item.name);
 
   if (existing) {
 
@@ -323,23 +313,138 @@ function addToCart(index) {
 
   }
 
-  /*
-    IMPORTANT:
-    Cart will NOT open automatically.
-
-    Customer can continue selecting
-    multiple food items first.
-  */
-
   showToast(
-    `${item.name} added • ` +
-    `${getCartCount()} item(s) in cart`
+    `${item.name} added • ${getCartCount()} item(s) in cart`
   );
 
+  /* IMPORTANT:
+     Show floating cart/order button
+     instead of opening modal immediately.
+  */
+
+  showCartButton();
 }
 
+/* =====================================================
+   FLOATING CART / ORDER NOW BUTTON
+===================================================== */
 
-/* ================= PLUS / MINUS ================= */
+function showCartButton() {
+
+  let cartButton =
+    document.getElementById("floatingCartButton");
+
+  if (!cartButton) {
+
+    cartButton =
+      document.createElement("button");
+
+    cartButton.id =
+      "floatingCartButton";
+
+    cartButton.type =
+      "button";
+
+    cartButton.onclick =
+      openCart;
+
+    document.body.appendChild(
+      cartButton
+    );
+  }
+
+  cartButton.innerHTML = `
+
+    <span>
+      🛒 View Cart
+    </span>
+
+    <span
+      style="
+        background:#fff;
+        color:#111;
+        padding:3px 9px;
+        border-radius:20px;
+        font-weight:800;
+        margin-left:6px;
+      "
+    >
+      ${getCartCount()}
+    </span>
+
+    <span
+      style="
+        margin-left:8px;
+      "
+    >
+      • Order Now
+    </span>
+
+  `;
+
+  cartButton.style.cssText = `
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:22px;
+
+    transform:translateX(-50%);
+
+    z-index:99999;
+
+    border:none;
+
+    padding:14px 22px;
+
+    border-radius:999px;
+
+    background:#111827;
+
+    color:#ffffff;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    box-shadow:
+      0 12px 35px rgba(0,0,0,.30);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    white-space:nowrap;
+
+  `;
+}
+
+/* =====================================================
+   HIDE FLOATING CART BUTTON
+===================================================== */
+
+function hideCartButton() {
+
+  const cartButton =
+    document.getElementById(
+      "floatingCartButton"
+    );
+
+  if (cartButton) {
+
+    cartButton.remove();
+
+  }
+}
+
+/* =====================================================
+   CHANGE CART QUANTITY
+===================================================== */
 
 function changeCartQty(index, change) {
 
@@ -348,31 +453,39 @@ function changeCartQty(index, change) {
   cart[index].qty += change;
 
   if (cart[index].qty <= 0) {
+
     cart.splice(index, 1);
+
   }
 
   if (!cart.length) {
 
     closeModal();
 
-    showToast("Your cart is empty.");
+    hideCartButton();
+
+    showToast(
+      "Your cart is empty."
+    );
 
     return;
-
   }
 
-  openCart();
+  showCartButton();
 
+  openCart();
 }
 
-
-/* ================= REMOVE ITEM ================= */
+/* =====================================================
+   REMOVE CART ITEM
+===================================================== */
 
 function removeCartItem(index) {
 
   if (!cart[index]) return;
 
-  const itemName = cart[index].name;
+  const name =
+    cart[index].name;
 
   cart.splice(index, 1);
 
@@ -380,32 +493,39 @@ function removeCartItem(index) {
 
     closeModal();
 
+    hideCartButton();
+
     showToast(
-      `${itemName} removed. Cart is empty.`
+      `${name} removed. Cart is empty.`
     );
 
     return;
-
   }
 
-  openCart();
+  showCartButton();
 
+  openCart();
 }
 
-
-/* ================= OPEN CART ================= */
+/* =====================================================
+   OPEN CART
+===================================================== */
 
 function openCart() {
 
   if (!cart.length) {
 
-    showToast("Your cart is empty.");
+    showToast(
+      "Your cart is empty."
+    );
+
+    hideCartButton();
 
     return;
-
   }
 
-  const total = getCartTotal();
+  const total =
+    getCartTotal();
 
   modalContent.innerHTML = `
 
@@ -428,14 +548,14 @@ function openCart() {
             align-items:center;
             justify-content:space-between;
             gap:12px;
-            margin:12px 0;
+            margin:10px 0;
           "
         >
 
           <div>
 
             <strong>
-              ${item.name}
+              ${esc(item.name)}
             </strong>
 
             <div
@@ -486,6 +606,7 @@ function openCart() {
               type="button"
               class="add"
               onclick="removeCartItem(${index})"
+              title="Remove"
             >
               ✕
             </button>
@@ -523,9 +644,9 @@ function openCart() {
 
     <div class="demo-note">
 
-      Select all your food items first.
-      Then review your cart and place
-      the final order on WhatsApp.
+      Payment gateway is OFF.
+      Your order request will be sent
+      to Harsh Garden on WhatsApp.
 
     </div>
 
@@ -552,6 +673,7 @@ function openCart() {
     </div>
 
     <button
+      type="button"
       class="btn primary"
       style="
         width:100%;
@@ -565,22 +687,22 @@ function openCart() {
   `;
 
   openModal();
-
 }
 
-
-/* ================= FOOD ORDER ================= */
+/* =====================================================
+   FOOD ORDER → WHATSAPP
+===================================================== */
 
 function placeDemoOrder() {
 
   const name =
-    getElement("custName")?.value.trim();
+    safe("custName")?.value.trim();
 
   const mobile =
-    getElement("custMobile")?.value.trim();
+    safe("custMobile")?.value.trim();
 
   const address =
-    getElement("custAddress")?.value.trim();
+    safe("custAddress")?.value.trim();
 
   if (
     !name ||
@@ -593,25 +715,28 @@ function placeDemoOrder() {
     );
 
     return;
-
   }
 
-  const total = getCartTotal();
+  if (!cart.length) {
+
+    showToast(
+      "Your cart is empty."
+    );
+
+    return;
+  }
+
+  const total =
+    getCartTotal();
 
   let message =
 `🍽️ *HARSH GARDEN - NEW FOOD ORDER*
 
-👤 Customer Name:
-${name}
-
-📱 Mobile:
-${mobile}
-
-📍 Room / Table / Address:
-${address}
+👤 Customer: ${name}
+📱 Mobile: ${mobile}
+📍 Room / Table / Address: ${address}
 
 🛒 *ORDER DETAILS*
-
 `;
 
   cart.forEach(item => {
@@ -623,9 +748,9 @@ ${address}
 
   message +=
 `
-💰 *TOTAL AMOUNT: ₹${total}*
+💰 *TOTAL: ₹${total}*
 
-Please confirm my food order.
+Please confirm my order.
 
 Thank you!
 `;
@@ -634,84 +759,83 @@ Thank you!
 
   cart = [];
 
+  hideCartButton();
+
   closeModal();
 
   showToast(
     "✓ Order details opened in WhatsApp."
   );
-
 }
 
-
-/* ================= ROOM RENDER ================= */
+/* =====================================================
+   ROOM RENDER
+===================================================== */
 
 function renderRooms() {
 
   if (!roomCards) return;
 
   roomCards.innerHTML =
-    rooms.map((room, index) => {
+    rooms.map((room, index) => `
 
-      return `
+      <article class="room-card">
 
-        <article class="room-card">
+        <div class="room-art">
 
-          <div class="room-art">
+          <span>
+            ${room.icon}
+          </span>
 
-            <span>
-              ${room.icon}
+        </div>
+
+        <div class="room-info">
+
+          <h3>
+            ${esc(room.name)}
+          </h3>
+
+          <small>
+            ${esc(room.facilities)}
+          </small>
+
+          <div class="room-price">
+
+            <span class="price">
+
+              ₹${room.price}
+
+              <small>
+                /night
+              </small>
+
             </span>
 
-          </div>
-
-          <div class="room-info">
-
-            <h3>
-              ${room.name}
-            </h3>
-
-            <small>
-              ${room.facilities}
-            </small>
-
-            <div class="room-price">
-
-              <span class="price">
-
-                ₹${room.price}
-
-                <small>
-                  /night
-                </small>
-
-              </span>
-
-              <button
-                class="add"
-                onclick="openRoom(${index})"
-              >
-                Book
-              </button>
-
-            </div>
+            <button
+              type="button"
+              class="add"
+              onclick="openRoom(${index})"
+            >
+              Book
+            </button>
 
           </div>
 
-        </article>
+        </div>
 
-      `;
+      </article>
 
-    })
-    .join("");
-
+    `).join("");
 }
 
-
-/* ================= ROOM BOOKING FORM ================= */
+/* =====================================================
+   ROOM BOOKING FORM
+===================================================== */
 
 function openRoom(index) {
 
-  const room = rooms[index];
+  const room =
+    rooms[index];
 
   if (!room) return;
 
@@ -722,20 +846,19 @@ function openRoom(index) {
     </span>
 
     <h2>
-      ${room.name}
+      ${esc(room.name)}
     </h2>
 
     <p>
-      ${room.facilities}
+      ${esc(room.facilities)}
     </p>
 
     <div class="demo-note">
 
       Select your exact date,
       time and shift.
-
-      Your booking request will be
-      sent to Harsh Garden on WhatsApp.
+      Booking request will be sent
+      to Harsh Garden on WhatsApp.
 
     </div>
 
@@ -810,7 +933,7 @@ function openRoom(index) {
       <input
         id="roomAddress"
         class="full"
-        placeholder="Customer Full Address *"
+        placeholder="Customer Address *"
       >
 
       <textarea
@@ -823,12 +946,13 @@ function openRoom(index) {
     </div>
 
     <button
+      type="button"
       class="btn primary"
       style="
         width:100%;
         margin-top:15px
       "
-      onclick="submitRoom('${room.name}')"
+      onclick="submitRoom('${esc(room.name)}')"
     >
       📲 Book Room on WhatsApp
     </button>
@@ -836,46 +960,46 @@ function openRoom(index) {
   `;
 
   openModal();
-
 }
 
-
-/* ================= SUBMIT ROOM ================= */
+/* =====================================================
+   SUBMIT ROOM BOOKING
+===================================================== */
 
 function submitRoom(roomName) {
 
   const name =
-    getElement("roomName")?.value.trim();
+    safe("roomName")?.value.trim();
 
   const mobile =
-    getElement("roomMobile")?.value.trim();
+    safe("roomMobile")?.value.trim();
 
   const guests =
-    getElement("roomGuests")?.value.trim();
+    safe("roomGuests")?.value.trim();
 
   const shift =
-    getElement("roomShift")?.value;
+    safe("roomShift")?.value;
 
   const checkInDate =
-    getElement("checkInDate")?.value;
+    safe("checkInDate")?.value;
 
   const checkOutDate =
-    getElement("checkOutDate")?.value;
+    safe("checkOutDate")?.value;
 
   const startTime =
-    getElement("roomStartTime")?.value;
+    safe("roomStartTime")?.value;
 
   const endTime =
-    getElement("roomEndTime")?.value;
+    safe("roomEndTime")?.value;
 
   const hours =
-    getElement("roomHours")?.value.trim();
+    safe("roomHours")?.value.trim();
 
   const address =
-    getElement("roomAddress")?.value.trim();
+    safe("roomAddress")?.value.trim();
 
   const note =
-    getElement("roomNote")?.value.trim();
+    safe("roomNote")?.value.trim();
 
   if (
     !name ||
@@ -895,7 +1019,6 @@ function submitRoom(roomName) {
     );
 
     return;
-
   }
 
   const room =
@@ -906,35 +1029,19 @@ function submitRoom(roomName) {
   const message =
 `🛏️ *HARSH GARDEN - ROOM BOOKING REQUEST*
 
-🏨 Room Type:
-${roomName}
+🏨 Room: ${roomName}
 
-👤 Guest Name:
-${name}
+👤 Guest Name: ${name}
+📱 Mobile: ${mobile}
+👥 Guests: ${guests}
 
-📱 Mobile:
-${mobile}
+📅 Check-in Date: ${checkInDate}
+📅 Check-out Date: ${checkOutDate}
 
-👥 Number of Guests:
-${guests}
-
-📅 Check-in Date:
-${checkInDate}
-
-📅 Check-out Date:
-${checkOutDate}
-
-🕐 Start Time:
-${startTime}
-
-🕐 End Time:
-${endTime}
-
-⏱️ Required Hours:
-${hours}
-
-🌞 Shift:
-${shift}
+🕐 Start Time: ${startTime}
+🕐 End Time: ${endTime}
+⏱️ Required Hours: ${hours}
+🌞 Shift: ${shift}
 
 📍 Customer Address:
 ${address}
@@ -945,8 +1052,7 @@ ${note || "None"}
 💰 Listed Room Rate:
 ₹${room ? room.price : "N/A"} / night
 
-Please confirm room availability,
-price and booking.
+Please confirm availability and booking.
 
 Thank you!
 `;
@@ -956,13 +1062,13 @@ Thank you!
   closeModal();
 
   showToast(
-    "✓ Room booking opened in WhatsApp."
+    "✓ Room booking details opened in WhatsApp."
   );
-
 }
 
-
-/* ================= BANQUET BOOKING ================= */
+/* =====================================================
+   BANQUET BOOKING
+===================================================== */
 
 function openBanquet() {
 
@@ -984,8 +1090,9 @@ function openBanquet() {
 
     <div class="demo-note">
 
-      Choose your event purpose,
-      date, timing and guest count.
+      Available event purposes include
+      Wedding, Birthday, Sagun/Tilak,
+      Reception and more.
 
     </div>
 
@@ -1005,7 +1112,7 @@ function openBanquet() {
       <input
         id="eventAddress"
         class="full"
-        placeholder="Full Customer Address *"
+        placeholder="Full Address *"
       >
 
       <select
@@ -1113,12 +1220,13 @@ function openBanquet() {
         id="eventRequirements"
         class="full"
         rows="4"
-        placeholder="Special Requirements: Decoration, Catering, Stage, DJ, Seating etc."
+        placeholder="Special Requirements: decoration, catering, stage, DJ, seating, etc."
       ></textarea>
 
     </div>
 
     <button
+      type="button"
       class="btn primary"
       style="
         width:100%;
@@ -1132,46 +1240,46 @@ function openBanquet() {
   `;
 
   openModal();
-
 }
 
-
-/* ================= SUBMIT BANQUET ================= */
+/* =====================================================
+   SUBMIT BANQUET
+===================================================== */
 
 function submitBanquet() {
 
   const name =
-    getElement("eventName")?.value.trim();
+    safe("eventName")?.value.trim();
 
   const mobile =
-    getElement("eventMobile")?.value.trim();
+    safe("eventMobile")?.value.trim();
 
   const address =
-    getElement("eventAddress")?.value.trim();
+    safe("eventAddress")?.value.trim();
 
   const purpose =
-    getElement("eventPurpose")?.value;
+    safe("eventPurpose")?.value;
 
   const eventDate =
-    getElement("eventDate")?.value;
+    safe("eventDate")?.value;
 
   const guestCount =
-    getElement("guestCount")?.value.trim();
+    safe("guestCount")?.value.trim();
 
   const startTime =
-    getElement("eventStartTime")?.value;
+    safe("eventStartTime")?.value;
 
   const endTime =
-    getElement("eventEndTime")?.value;
+    safe("eventEndTime")?.value;
 
   const shift =
-    getElement("eventShift")?.value;
+    safe("eventShift")?.value;
 
   const hallType =
-    getElement("hallType")?.value;
+    safe("hallType")?.value;
 
   const requirements =
-    getElement("eventRequirements")?.value.trim();
+    safe("eventRequirements")?.value.trim();
 
   if (
     !name ||
@@ -1190,41 +1298,26 @@ function submitBanquet() {
     );
 
     return;
-
   }
 
   const message =
 `🏛️ *HARSH GARDEN - BANQUET BOOKING REQUEST*
 
-👤 Customer Name:
-${name}
+👤 Customer Name: ${name}
+📱 Mobile: ${mobile}
 
-📱 Mobile:
-${mobile}
-
-📍 Customer Address:
+📍 Address:
 ${address}
 
-🎉 Event Purpose:
-${purpose}
+🎉 Event Purpose: ${purpose}
+🏛️ Hall Type: ${hallType}
 
-🏛️ Hall Type:
-${hallType}
+📅 Event Date: ${eventDate}
+🕐 Start Time: ${startTime}
+🕐 End Time: ${endTime}
+🌙 Shift: ${shift}
 
-📅 Event Date:
-${eventDate}
-
-🕐 Start Time:
-${startTime}
-
-🕐 End Time:
-${endTime}
-
-🌙 Shift:
-${shift}
-
-👥 Expected Guests:
-${guestCount}
+👥 Expected Guests: ${guestCount}
 
 📝 Special Requirements:
 ${requirements || "None"}
@@ -1242,13 +1335,15 @@ Thank you!
   showToast(
     "✓ Banquet request opened in WhatsApp."
   );
-
 }
 
+/* =====================================================
+   QR TABLE SYSTEM
+===================================================== */
 
-/* ================= QR TABLE SYSTEM ================= */
-
-function simulateQR(tableNumber = "TABLE 07") {
+function simulateQR(
+  tableNumber = "TABLE 07"
+) {
 
   modalContent.innerHTML = `
 
@@ -1257,7 +1352,7 @@ function simulateQR(tableNumber = "TABLE 07") {
     </span>
 
     <h2>
-      ${tableNumber}
+      ${esc(tableNumber)}
     </h2>
 
     <div
@@ -1270,13 +1365,13 @@ function simulateQR(tableNumber = "TABLE 07") {
         align-items:center;
         justify-content:center;
         background:
-        repeating-linear-gradient(
-          45deg,
-          #111 0 6px,
-          #fff 6px 12px
-        );
+          repeating-linear-gradient(
+            45deg,
+            #111 0 6px,
+            #fff 6px 12px
+          );
         box-shadow:
-        0 20px 45px rgba(0,0,0,.25);
+          0 20px 45px rgba(0,0,0,.25);
       "
     >
 
@@ -1298,16 +1393,21 @@ function simulateQR(tableNumber = "TABLE 07") {
     </div>
 
     <p>
-      Scan the real QR code on the table
-      to open the food menu.
+
+      Scan the real QR code on the
+      table to open the food menu.
+
+      This visual is only the
+      website demo representation.
+
     </p>
 
     <button
+      type="button"
       class="btn primary"
       onclick="
         closeModal();
-        document
-          .querySelector('#food')
+        document.querySelector('#food')
           ?.scrollIntoView({
             behavior:'smooth'
           })
@@ -1319,11 +1419,11 @@ function simulateQR(tableNumber = "TABLE 07") {
   `;
 
   openModal();
-
 }
 
-
-/* ================= FILTER BUTTONS ================= */
+/* =====================================================
+   FOOD FILTER BUTTONS
+===================================================== */
 
 document
   .querySelectorAll(".filter")
@@ -1337,11 +1437,15 @@ document
           .querySelectorAll(".filter")
           .forEach(btn => {
 
-            btn.classList.remove("active");
+            btn.classList.remove(
+              "active"
+            );
 
           });
 
-        button.classList.add("active");
+        button.classList.add(
+          "active"
+        );
 
         renderFood(
           button.dataset.category
@@ -1352,8 +1456,9 @@ document
 
   });
 
-
-/* ================= SERVICE SCROLL ================= */
+/* =====================================================
+   SERVICE SCROLL BUTTONS
+===================================================== */
 
 document
   .querySelectorAll("[data-scroll]")
@@ -1381,11 +1486,12 @@ document
 
   });
 
-
-/* ================= BANQUET BUTTON ================= */
+/* =====================================================
+   BANQUET BUTTON
+===================================================== */
 
 const banquetBtn =
-  getElement("banquetBtn");
+  safe("banquetBtn");
 
 if (banquetBtn) {
 
@@ -1396,40 +1502,41 @@ if (banquetBtn) {
 
 }
 
-
-/* ================= QR BUTTON ================= */
+/* =====================================================
+   QR BUTTON
+===================================================== */
 
 const qrBtn =
-  getElement("qrBtn");
+  safe("qrBtn");
 
 if (qrBtn) {
 
   qrBtn.addEventListener(
     "click",
-    () => {
-
-      simulateQR("TABLE 07");
-
-    }
+    () => simulateQR("TABLE 07")
   );
 
 }
 
+/* =====================================================
+   CLOSE MODAL BUTTON
+===================================================== */
 
-/* ================= CLOSE MODAL ================= */
+const closeBtn =
+  safe("closeModal");
 
-const closeModalButton =
-  getElement("closeModal");
+if (closeBtn) {
 
-if (closeModalButton) {
-
-  closeModalButton.addEventListener(
+  closeBtn.addEventListener(
     "click",
     closeModal
   );
 
 }
 
+/* =====================================================
+   CLICK OUTSIDE MODAL
+===================================================== */
 
 if (modal) {
 
@@ -1437,8 +1544,12 @@ if (modal) {
     "click",
     event => {
 
-      if (event.target === modal) {
+      if (
+        event.target === modal
+      ) {
+
         closeModal();
+
       }
 
     }
@@ -1446,8 +1557,9 @@ if (modal) {
 
 }
 
-
-/* ================= CART BUTTON ================= */
+/* =====================================================
+   HEADER CART BUTTON
+===================================================== */
 
 document
   .querySelectorAll("[data-cart]")
@@ -1460,14 +1572,15 @@ document
 
   });
 
-
-/* ================= MOBILE MENU ================= */
+/* =====================================================
+   MOBILE MENU
+===================================================== */
 
 const menuBtn =
-  getElement("menuBtn");
+  safe("menuBtn");
 
 const nav =
-  getElement("nav");
+  safe("nav");
 
 if (
   menuBtn &&
@@ -1478,32 +1591,42 @@ if (
     "click",
     () => {
 
-      nav.classList.toggle("open");
+      nav.classList.toggle(
+        "open"
+      );
 
     }
   );
 
 }
 
-
-/* ================= ESCAPE ================= */
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
 
 document.addEventListener(
   "keydown",
   event => {
 
-    if (event.key === "Escape") {
+    if (
+      event.key === "Escape"
+    ) {
+
       closeModal();
+
     }
 
   }
 );
 
-
-/* ================= HERO FOOD ================= */
+/* =====================================================
+   HERO FOOD CARD
+===================================================== */
 
 const cardFood =
-  document.querySelector(".card-food");
+  document.querySelector(
+    ".card-food"
+  );
 
 if (cardFood) {
 
@@ -1522,11 +1645,14 @@ if (cardFood) {
 
 }
 
-
-/* ================= HERO ROOM ================= */
+/* =====================================================
+   HERO ROOM CARD
+===================================================== */
 
 const cardRoom =
-  document.querySelector(".card-room");
+  document.querySelector(
+    ".card-room"
+  );
 
 if (cardRoom) {
 
@@ -1545,11 +1671,14 @@ if (cardRoom) {
 
 }
 
-
-/* ================= HERO WEDDING ================= */
+/* =====================================================
+   HERO WEDDING CARD
+===================================================== */
 
 const cardWed =
-  document.querySelector(".card-wed");
+  document.querySelector(
+    ".card-wed"
+  );
 
 if (cardWed) {
 
@@ -1560,14 +1689,21 @@ if (cardWed) {
 
 }
 
-
-/* ================= INITIALIZE ================= */
+/* =====================================================
+   INITIALIZE WEBSITE
+===================================================== */
 
 renderFood();
 
 renderRooms();
 
-
 /* =====================================================
-   END OF HARSH GARDEN JAVASCRIPT
+   IMPORTANT
+
+   This script opens WhatsApp with a
+   pre-filled message.
+
+   Customer must press SEND
+   in WhatsApp.
+
 ===================================================== */
