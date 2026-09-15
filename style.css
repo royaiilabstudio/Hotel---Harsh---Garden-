@@ -1,7 +1,7 @@
 /* =========================================================
    HARSH GARDEN
    PREMIUM HOTEL • RESTAURANT • BANQUET
-   FINAL RESPONSIVE STYLESHEET
+   COMPLETE RESPONSIVE STYLESHEET
 ========================================================= */
 
 
@@ -516,7 +516,6 @@ nav a:hover::after {
 
 /* =========================================================
    LEGACY 3D ELEMENTS
-   Kept compatible with existing HTML
 ========================================================= */
 
 .hotel-cube {
@@ -559,6 +558,7 @@ nav a:hover::after {
 
 .cube-right {
   width: 290px;
+
   transform:
     rotateY(90deg)
     translateZ(255px);
@@ -896,7 +896,7 @@ nav a:hover::after {
 
 
 /* =========================================================
-   FOOD SECTION
+   FOOD
 ========================================================= */
 
 .food-grid {
@@ -1052,12 +1052,15 @@ nav a:hover::after {
 
 /* =========================================================
    ROOMS
+   FINAL PHOTO CARD DESIGN
 ========================================================= */
 
 .split-section {
   display: grid;
 
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  grid-template-columns:
+    minmax(0, 0.85fr)
+    minmax(0, 1.15fr);
 
   gap: 65px;
 
@@ -1082,115 +1085,241 @@ nav a:hover::after {
   font-size: 13px;
 }
 
-.facility-list li {
-  padding: 4px 0;
-}
 
+/* Three cards on desktop */
 .room-showcase {
-  display: grid;
+  display: grid !important;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr)) !important;
 
-  gap: 14px;
+  gap: 18px !important;
+
+  width: 100% !important;
 }
 
+
+/* Individual room */
 .room-card {
-  overflow: hidden;
+  position: relative !important;
 
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 22px;
+  width: 100% !important;
 
-  background: #11151e;
+  height: 460px !important;
+  min-height: 460px !important;
+
+  overflow: hidden !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border-radius: 24px !important;
+
+  background: #11151e !important;
+
+  display: flex !important;
+  align-items: flex-end !important;
 
   transition:
     transform 0.3s ease,
     border-color 0.3s ease,
-    box-shadow 0.3s ease;
+    box-shadow 0.3s ease !important;
 }
 
+
+/* Hide old fake room graphic / emoji */
+.room-card .room-art {
+  display: none !important;
+}
+
+
+/* Room photo layer */
+.room-card::before {
+  content: "" !important;
+
+  position: absolute !important;
+  inset: 0 !important;
+
+  z-index: 0 !important;
+
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+
+  transition: transform 0.6s ease !important;
+}
+
+
+/* Deluxe */
+.room-card:nth-child(1)::before {
+  background-image:
+    url("deluxe-room.jpg") !important;
+}
+
+
+/* Premium */
+.room-card:nth-child(2)::before {
+  background-image:
+    url("premium-room.jpg") !important;
+}
+
+
+/* Family */
+.room-card:nth-child(3)::before {
+  background-image:
+    url("family-room.jpg") !important;
+}
+
+
+/* Dark photo overlay */
+.room-card::after {
+  content: "" !important;
+
+  position: absolute !important;
+  inset: 0 !important;
+
+  z-index: 1 !important;
+
+  pointer-events: none !important;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.96) 0%,
+      rgba(0, 0, 0, 0.78) 30%,
+      rgba(0, 0, 0, 0.35) 58%,
+      rgba(0, 0, 0, 0.05) 100%
+    ) !important;
+}
+
+
+/* Photo zoom */
+.room-card:hover::before {
+  transform: scale(1.06) !important;
+}
+
+
+/* Card hover */
 .room-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px) !important;
 
-  border-color: rgba(228, 185, 111, 0.3);
-
-  box-shadow:
-    0 20px 45px rgba(0, 0, 0, 0.3);
-}
-
-.room-art {
-  height: 190px;
-
-  position: relative;
-
-  display: grid;
-  place-items: center;
-
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      145deg,
-      #5d5447,
-      #1b1f26
-    );
-
-  font-size: 90px;
-}
-
-.room-art::before {
-  content: "";
-
-  position: absolute;
-
-  width: 140px;
-  height: 75px;
-
-  bottom: 28px;
-  left: calc(50% - 70px);
-
-  border-radius: 12px 12px 5px 5px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #cdbba2,
-      #74624d
-    );
+  border-color:
+    rgba(228, 185, 111, 0.40) !important;
 
   box-shadow:
-    0 18px 30px rgba(0, 0, 0, 0.35);
+    0 25px 55px rgba(0, 0, 0, 0.40) !important;
 }
 
-.room-art span {
-  position: relative;
-  z-index: 1;
-}
 
+/* Room information sits above photo */
 .room-info {
-  padding: 15px;
+  position: absolute !important;
+
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+
+  z-index: 3 !important;
+
+  padding: 28px 22px 22px !important;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(5, 6, 9, 0.97),
+      rgba(5, 6, 9, 0.70),
+      transparent
+    ) !important;
 }
 
+
+/* Room title */
 .room-info h3 {
-  margin: 0 0 7px;
+  margin: 0 0 7px !important;
 
-  color: #fff;
+  color: #fff !important;
 
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 21px;
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif !important;
+
+  font-size: 27px !important;
+
+  line-height: 1.15 !important;
 }
 
+
+/* Room description */
 .room-info small {
-  color: #858b94;
+  display: block !important;
+
+  color:
+    rgba(255, 255, 255, 0.78) !important;
+
+  font-size: 12px !important;
 }
 
+
+/* Price + button row */
 .room-price {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex !important;
 
-  gap: 10px;
+  align-items: center !important;
 
-  margin-top: 12px;
+  justify-content: space-between !important;
+
+  gap: 12px !important;
+
+  margin-top: 16px !important;
+}
+
+
+/* Room price */
+.room-price .price {
+  color: #e6bd78 !important;
+
+  font-size: 17px !important;
+
+  font-weight: 900 !important;
+}
+
+
+/* Book Room button */
+.room-price button,
+.room-price .btn {
+  min-height: 42px !important;
+
+  padding: 10px 15px !important;
+
+  border: 0 !important;
+
+  border-radius: 11px !important;
+
+  color: #111 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e6bd74,
+      #b7792f
+    ) !important;
+
+  font-size: 12px !important;
+
+  font-weight: 900 !important;
+
+  cursor: pointer !important;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease !important;
+}
+
+.room-price button:hover,
+.room-price .btn:hover {
+  transform: translateY(-2px) !important;
+
+  box-shadow:
+    0 8px 20px rgba(224, 180, 106, 0.22) !important;
 }
 
 
@@ -1209,133 +1338,104 @@ nav a:hover::after {
 }
 
 .banquet-visuals {
-  display: grid;
+  display: grid !important;
 
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-columns:
+    minmax(0, 2fr)
+    minmax(0, 1fr) !important;
 
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows:
+    260px
+    260px !important;
 
-  gap: 14px;
+  gap: 18px !important;
 
-  min-height: 530px;
+  min-height: 538px;
 
-  margin-top: 30px;
+  margin-top: 35px;
 }
 
 .hall-card {
-  position: relative;
+  position: relative !important;
 
-  overflow: hidden;
+  overflow: hidden !important;
 
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 25px;
+  min-height: 220px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #58493b,
-      #151922
-    );
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  border-radius: 24px;
+
+  background-size: cover !important;
+
+  background-position: center !important;
+
+  background-repeat: no-repeat !important;
 
   box-shadow:
-    inset 0 0 100px rgba(0, 0, 0, 0.4);
+    inset 0 0 100px rgba(0, 0, 0, 0.35);
 
   transition:
-    transform 0.3s ease,
-    border-color 0.3s ease;
+    transform 0.35s ease,
+    border-color 0.35s ease;
 }
 
-.hall-card:hover {
-  transform: translateY(-4px);
 
-  border-color: rgba(228, 185, 111, 0.3);
+/* Main wedding hall */
+.hall-main {
+  grid-row: 1 / 3 !important;
+
+  background-image:
+    url("wedding-hall.jpg") !important;
 }
 
-.hall-card::before {
+
+/* Garden */
+.hall-side {
+  background-image:
+    url("wedding-garden.jpg") !important;
+}
+
+
+/* Gallery */
+.hall-side.second {
+  background-image:
+    url("wedding-hall-gallery.jpg") !important;
+}
+
+
+/* Wedding image overlay */
+.hall-card::after {
   content: "";
 
   position: absolute;
-
-  inset: 10% 7%;
+  inset: 0;
 
   z-index: 1;
 
-  border: 2px solid rgba(231, 194, 124, 0.45);
-
-  border-radius: 10px;
-
-  box-shadow:
-    inset 0 0 50px rgba(220, 170, 80, 0.15);
-
   pointer-events: none;
-}
-
-.hall-main {
-  grid-row: 1 / 3;
 
   background:
-    radial-gradient(
-      circle at 50% 30%,
-      #b18b56,
-      #3a2b21 45%,
-      #10141b
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.82),
+      rgba(0, 0, 0, 0.10) 65%,
+      rgba(0, 0, 0, 0.02)
     );
+}
+
+
+/* Remove old fake WEDDING graphic */
+.hall-main::before {
+  display: none !important;
 }
 
 .hall-main::after {
-  content: "WEDDING";
-
-  position: absolute;
-
-  inset: 24% 12%;
-
-  z-index: 1;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 50%;
-
-  color: #e9d09d;
-
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 48px;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(244, 215, 156, 0.35),
-      transparent 60%
-    );
-
-  filter:
-    drop-shadow(
-      0 10px 30px #000
-    );
-
-  pointer-events: none;
+  content: "" !important;
 }
 
-.hall-side {
-  background:
-    radial-gradient(
-      circle at 50% 35%,
-      #777b80,
-      #292e35 48%,
-      #10141a
-    );
-}
 
-.hall-side.second {
-  background:
-    radial-gradient(
-      circle at 50% 35%,
-      #8a6b48,
-      #31261d 48%,
-      #10141a
-    );
-}
-
+/* Wedding text */
 .hall-overlay {
   position: absolute;
 
@@ -1345,7 +1445,9 @@ nav a:hover::after {
   z-index: 5;
 
   display: flex;
+
   flex-direction: column;
+
   gap: 5px;
 }
 
@@ -1353,19 +1455,32 @@ nav a:hover::after {
   color: #d9ad63;
 
   font-size: 9px;
+
   font-weight: 800;
+
   letter-spacing: 2px;
 }
 
 .hall-overlay b {
   color: #fff;
 
-  font-family: "Playfair Display", Georgia, serif;
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
   font-size: 24px;
 }
 
 .hall-overlay small {
-  color: #b1b4ba;
+  color: #d0d2d6;
+}
+
+.hall-card:hover {
+  transform: translateY(-4px);
+
+  border-color:
+    rgba(228, 185, 111, 0.35);
 }
 
 
@@ -1376,7 +1491,9 @@ nav a:hover::after {
 .qr-section {
   display: grid;
 
-  grid-template-columns: 320px minmax(0, 1fr);
+  grid-template-columns:
+    320px
+    minmax(0, 1fr);
 
   gap: 70px;
 
@@ -1393,8 +1510,11 @@ nav a:hover::after {
   height: 245px;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
 
   gap: 5px;
@@ -1442,7 +1562,9 @@ nav a:hover::after {
 .location-section {
   display: grid;
 
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
 
   gap: 50px;
 
@@ -1453,12 +1575,15 @@ nav a:hover::after {
   min-height: 300px;
 
   display: grid;
+
   place-items: center;
+
   align-content: center;
 
   gap: 6px;
 
   border: 1px solid rgba(255, 255, 255, 0.1);
+
   border-radius: 25px;
 
   background:
@@ -1497,14 +1622,17 @@ nav a:hover::after {
 
 footer {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   gap: 25px;
 
   padding: 35px 7vw;
 
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-top:
+    1px solid rgba(255, 255, 255, 0.07);
 
   color: #858b95;
 
@@ -1549,19 +1677,22 @@ footer span {
   background: #e8c27f;
 
   font-size: 12px;
+
   font-weight: 800;
 
   box-shadow:
     0 15px 40px rgba(0, 0, 0, 0.4);
 
-  transform: translate(-50%, 120px);
+  transform:
+    translate(-50%, 120px);
 
   transition:
     transform 0.35s ease;
 }
 
 .toast.show {
-  transform: translate(-50%, 0);
+  transform:
+    translate(-50%, 0);
 }
 
 
@@ -1571,18 +1702,22 @@ footer span {
 
 .modal {
   position: fixed;
+
   inset: 0;
 
   z-index: 1500;
 
   display: none;
+
   place-items: center;
 
   padding: 20px;
 
-  background: rgba(0, 0, 0, 0.72);
+  background:
+    rgba(0, 0, 0, 0.72);
 
   backdrop-filter: blur(8px);
+
   -webkit-backdrop-filter: blur(8px);
 }
 
@@ -1592,15 +1727,21 @@ footer span {
 
 .modal-box {
   width: min(560px, 100%);
-  max-height: calc(100vh - 40px);
+
+  max-height:
+    calc(100vh - 40px);
 
   position: relative;
 
   overflow-y: auto;
 
+  -webkit-overflow-scrolling: touch;
+
   padding: 30px;
 
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border:
+    1px solid rgba(255, 255, 255, 0.12);
+
   border-radius: 24px;
 
   background: #10151e;
@@ -1637,7 +1778,11 @@ footer span {
 
   color: #fff;
 
-  font-family: "Playfair Display", Georgia, serif;
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
   font-size: 36px;
 }
 
@@ -1647,10 +1792,17 @@ footer span {
   line-height: 1.6;
 }
 
+
+/* =========================================================
+   FORMS
+========================================================= */
+
 .form-grid {
   display: grid;
 
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns:
+    1fr
+    1fr;
 
   gap: 12px;
 
@@ -1664,7 +1816,9 @@ footer span {
 
   padding: 13px;
 
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border:
+    1px solid rgba(255, 255, 255, 0.1);
+
   border-radius: 10px;
 
   outline: none;
@@ -1676,32 +1830,43 @@ footer span {
 
 .form-grid textarea {
   min-height: 100px;
+
   resize: vertical;
 }
 
 .form-grid input:focus,
 .form-grid select:focus,
 .form-grid textarea:focus {
-  border-color: rgba(228, 185, 111, 0.55);
+  border-color:
+    rgba(228, 185, 111, 0.55);
 
   box-shadow:
-    0 0 0 3px rgba(228, 185, 111, 0.07);
+    0 0 0 3px
+    rgba(228, 185, 111, 0.07);
 }
 
 .form-grid .full {
   grid-column: 1 / -1;
 }
 
+
+/* =========================================================
+   CART
+========================================================= */
+
 .cart-line {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   gap: 12px;
 
   padding: 9px 0;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.07);
 
   color: #ddd;
 
@@ -1710,7 +1875,9 @@ footer span {
 
 .total {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   margin: 18px 0;
@@ -1718,6 +1885,7 @@ footer span {
   color: #fff;
 
   font-size: 18px;
+
   font-weight: 800;
 }
 
@@ -1726,40 +1894,58 @@ footer span {
 
   padding: 11px;
 
-  border: 1px solid rgba(218, 173, 96, 0.18);
+  border:
+    1px solid rgba(218, 173, 96, 0.18);
+
   border-radius: 10px;
 
   color: #dcb06a;
 
-  background: rgba(218, 173, 96, 0.08);
+  background:
+    rgba(218, 173, 96, 0.08);
 
   font-size: 11px;
 }
 
 
 /* =========================================================
-   FLOATING CART / ORDER BUTTON
+   FLOATING CART
+   RIGHT SIDE
 ========================================================= */
 
 #floatingCartButton {
-  position: fixed;
+  position: fixed !important;
 
-  right: 22px;
-  bottom: 22px;
+  left: auto !important;
 
-  z-index: 1200;
+  right: 18px !important;
 
-  min-height: 48px;
+  bottom: 18px !important;
+
+  transform: none !important;
+
+  z-index: 1200 !important;
+
+  width: auto !important;
+
+  max-width:
+    calc(100vw - 36px) !important;
+
+  min-height: 48px !important;
 
   display: none;
+
   align-items: center;
+
   justify-content: center;
 
   gap: 8px;
 
-  padding: 12px 17px;
+  padding: 12px 17px !important;
 
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border:
+    1px solid rgba(255, 255, 255, 0.15);
+
   border-radius: 999px;
 
   color: #111;
@@ -1772,7 +1958,10 @@ footer span {
     );
 
   font-size: 12px;
+
   font-weight: 900;
+
+  white-space: nowrap;
 
   box-shadow:
     0 14px 35px rgba(0, 0, 0, 0.4);
@@ -1784,20 +1973,49 @@ footer span {
     box-shadow 0.25s ease;
 }
 
+#floatingCartButton.show {
+  display: flex;
+}
+
 #floatingCartButton:hover {
-  transform: translateY(-3px);
+  transform:
+    translateY(-3px) !important;
 
   box-shadow:
     0 18px 40px rgba(0, 0, 0, 0.5);
 }
 
-#floatingCartButton.show {
-  display: flex;
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .hero {
+    gap: 35px;
+  }
+
+  .service-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .food-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  #roomCards.room-showcase {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+  }
+
 }
 
 
 /* =========================================================
-   MOBILE NAVIGATION
+   TABLET / MOBILE
 ========================================================= */
 
 @media (max-width: 950px) {
@@ -1832,7 +2050,8 @@ footer span {
 
   .service-grid,
   .food-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
   }
 
   .split-section,
@@ -1851,15 +2070,16 @@ footer span {
   }
 
   .banquet-visuals {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
 
-    grid-template-rows: repeat(3, 280px);
+    grid-template-rows:
+      repeat(3, 280px) !important;
 
     min-height: auto;
   }
 
   .hall-main {
-    grid-row: auto;
+    grid-row: auto !important;
   }
 
   .section-head {
@@ -1870,14 +2090,16 @@ footer span {
     gap: 15px;
   }
 
-  .room-showcase {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  #roomCards.room-showcase {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
   }
+
 }
 
 
 /* =========================================================
-   TABLET / SMALL MOBILE
+   800px
 ========================================================= */
 
 @media (max-width: 800px) {
@@ -1923,18 +2145,17 @@ footer span {
     padding: 75px 5vw;
   }
 
-  .room-showcase {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .facility-list {
-    margin-top: 20px;
-  }
-
   footer {
     padding-left: 5vw;
     padding-right: 5vw;
   }
+
+  #roomCards .room-card {
+    height: 430px !important;
+
+    min-height: 430px !important;
+  }
+
 }
 
 
@@ -1965,6 +2186,7 @@ footer span {
 
   .brand small {
     font-size: 7px;
+
     letter-spacing: 1px;
   }
 
@@ -1983,15 +2205,18 @@ footer span {
     display: none;
 
     flex-direction: column;
+
     align-items: flex-start;
 
     gap: 18px;
 
     padding: 20px 7vw;
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom:
+      1px solid rgba(255, 255, 255, 0.08);
 
-    background: rgba(10, 14, 21, 0.98);
+    background:
+      rgba(10, 14, 21, 0.98);
 
     box-shadow:
       0 20px 40px rgba(0, 0, 0, 0.25);
@@ -2019,19 +2244,22 @@ footer span {
     gap: 28px;
 
     padding-top: 45px;
+
     padding-bottom: 60px;
   }
 
   .hero h1 {
     margin-top: 15px;
 
-    font-size: clamp(48px, 14vw, 70px);
+    font-size:
+      clamp(48px, 14vw, 70px);
 
     letter-spacing: -2.5px;
   }
 
   .hero p {
     font-size: 14px;
+
     line-height: 1.75;
   }
 
@@ -2123,7 +2351,8 @@ footer span {
   .split-section h2,
   .qr-section h2,
   .location-section h2 {
-    font-size: clamp(38px, 11vw, 54px);
+    font-size:
+      clamp(38px, 11vw, 54px);
   }
 
   .section-head p,
@@ -2134,10 +2363,59 @@ footer span {
   }
 
   .service-grid,
-  .food-grid,
-  .room-showcase {
+  .food-grid {
     grid-template-columns: 1fr;
   }
+
+
+  /* =======================================================
+     MOBILE ROOMS
+  ======================================================= */
+
+  #roomCards.room-showcase {
+    grid-template-columns: 1fr !important;
+
+    gap: 16px !important;
+  }
+
+  #roomCards .room-card {
+    width: 100% !important;
+
+    height: 390px !important;
+
+    min-height: 390px !important;
+
+    border-radius: 21px !important;
+  }
+
+  #roomCards .room-info {
+    padding:
+      25px
+      17px
+      17px !important;
+  }
+
+  #roomCards .room-info h3 {
+    font-size: 25px !important;
+  }
+
+  #roomCards .room-info small {
+    font-size: 11px !important;
+  }
+
+  #roomCards .room-price {
+    margin-top: 14px !important;
+  }
+
+  #roomCards .room-price button,
+  #roomCards .room-price .btn {
+    min-height: 40px !important;
+
+    padding: 9px 13px !important;
+
+    font-size: 11px !important;
+  }
+
 
   .service-card {
     min-height: 165px;
@@ -2153,22 +2431,18 @@ footer span {
     gap: 8px;
   }
 
-  .room-art {
-    height: 220px;
-  }
 
+  /* Wedding */
   .banquet-visuals {
-    grid-template-rows: repeat(3, 240px);
+    grid-template-rows:
+      repeat(3, 240px) !important;
 
     gap: 12px;
   }
 
-  .hall-main::after {
-    font-size: 34px;
-  }
-
   .hall-overlay {
     left: 16px;
+
     bottom: 16px;
   }
 
@@ -2176,21 +2450,41 @@ footer span {
     font-size: 20px;
   }
 
+
+  /* QR */
   .fake-qr {
     width: 210px;
+
     height: 210px;
   }
 
+
+  /* Map */
   .map-placeholder {
     min-height: 250px;
   }
 
+
+  /* =======================================================
+     MOBILE MODAL
+  ======================================================= */
+
   .modal {
     padding: 12px;
+
+    z-index: 1500 !important;
   }
 
   .modal-box {
-    padding: 25px 18px;
+    width: 100%;
+
+    max-height:
+      calc(100vh - 24px) !important;
+
+    padding:
+      25px
+      18px
+      30px !important;
 
     border-radius: 20px;
   }
@@ -2207,23 +2501,49 @@ footer span {
     grid-column: auto;
   }
 
-  #floatingCartButton {
-    left: 15px;
-    right: 15px;
-    bottom: 15px;
 
-    width: calc(100% - 30px);
+  /* =======================================================
+     FLOATING CART — RIGHT SIDE
+  ======================================================= */
+
+  #floatingCartButton {
+    left: auto !important;
+
+    right: 12px !important;
+
+    bottom: 12px !important;
+
+    transform: none !important;
+
+    width: auto !important;
+
+    max-width:
+      calc(100vw - 24px) !important;
+
+    min-height: 44px !important;
+
+    padding:
+      11px
+      14px !important;
+
+    font-size: 11px !important;
+
+    z-index: 1200 !important;
   }
+
 
   footer {
     flex-direction: column;
+
     align-items: flex-start;
 
     padding-top: 28px;
+
     padding-bottom: 28px;
 
     gap: 15px;
   }
+
 }
 
 
@@ -2257,15 +2577,61 @@ footer span {
 
   .section {
     padding-left: 4vw;
+
     padding-right: 4vw;
   }
 
+
+  /* Small phone rooms */
+  #roomCards .room-card {
+    height: 360px !important;
+
+    min-height: 360px !important;
+  }
+
+  #roomCards .room-info {
+    padding:
+      22px
+      14px
+      14px !important;
+  }
+
+  #roomCards .room-info h3 {
+    font-size: 22px !important;
+  }
+
+  #roomCards .room-info small {
+    font-size: 10px !important;
+  }
+
+  #roomCards .room-price {
+    gap: 8px !important;
+  }
+
+  #roomCards .room-price .price {
+    font-size: 15px !important;
+  }
+
+  #roomCards .room-price button,
+  #roomCards .room-price .btn {
+    min-height: 38px !important;
+
+    padding:
+      8px
+      11px !important;
+
+    font-size: 10px !important;
+  }
+
+
   .banquet-visuals {
-    grid-template-rows: repeat(3, 210px);
+    grid-template-rows:
+      repeat(3, 210px) !important;
   }
 
   .fake-qr {
     width: 185px;
+
     height: 185px;
 
     border-width: 10px;
@@ -2274,6 +2640,20 @@ footer span {
   .fake-qr span {
     font-size: 50px;
   }
+
+
+  #floatingCartButton {
+    right: 9px !important;
+
+    bottom: 9px !important;
+
+    padding:
+      10px
+      12px !important;
+
+    font-size: 10px !important;
+  }
+
 }
 
 
@@ -2290,8 +2670,13 @@ footer span {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
   }
 }
