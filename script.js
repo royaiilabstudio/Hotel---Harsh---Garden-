@@ -10,12 +10,10 @@
 const WHATSAPP_NUMBER = "919288104425";
 
 function sendToWhatsApp(message) {
-
   const url =
     `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
   window.open(url, "_blank");
-
 }
 
 
@@ -155,28 +153,23 @@ const rooms = [
 let cart = [];
 
 
-const foodGrid =
-  document.getElementById("foodGrid");
+/* ================= ELEMENTS ================= */
 
-const roomCards =
-  document.getElementById("roomCards");
+const foodGrid = document.getElementById("foodGrid");
 
-const toast =
-  document.getElementById("toast");
+const roomCards = document.getElementById("roomCards");
 
-const modal =
-  document.getElementById("modal");
+const toast = document.getElementById("toast");
 
-const modalContent =
-  document.getElementById("modalContent");
+const modal = document.getElementById("modal");
+
+const modalContent = document.getElementById("modalContent");
 
 
 /* ================= HELPERS ================= */
 
 function getElement(id) {
-
   return document.getElementById(id);
-
 }
 
 
@@ -191,9 +184,7 @@ function showToast(text) {
   clearTimeout(window.toastTimer);
 
   window.toastTimer = setTimeout(() => {
-
     toast.classList.remove("show");
-
   }, 3200);
 
 }
@@ -202,9 +193,7 @@ function showToast(text) {
 function openModal() {
 
   if (modal) {
-
     modal.classList.add("show");
-
   }
 
 }
@@ -213,9 +202,7 @@ function openModal() {
 function closeModal() {
 
   if (modal) {
-
     modal.classList.remove("show");
-
   }
 
 }
@@ -228,18 +215,15 @@ function renderFood(category = "all") {
   if (!foodGrid) return;
 
   foodGrid.innerHTML = food
-
     .filter(item => {
 
       return category === "all" ||
              item.category === category;
 
     })
-
     .map(item => {
 
-      const index =
-        food.indexOf(item);
+      const index = food.indexOf(item);
 
       return `
 
@@ -253,7 +237,6 @@ function renderFood(category = "all") {
 
           </div>
 
-
           <div class="food-info">
 
             <h3>
@@ -264,21 +247,17 @@ function renderFood(category = "all") {
               ${item.desc}
             </p>
 
-
             <div class="food-bottom">
 
               <span class="price">
                 ₹${item.price}
               </span>
 
-
               <button
                 class="add"
                 onclick="addToCart(${index})"
               >
-
                 + Add
-
               </button>
 
             </div>
@@ -290,7 +269,6 @@ function renderFood(category = "all") {
       `;
 
     })
-
     .join("");
 
 }
@@ -301,12 +279,8 @@ function renderFood(category = "all") {
 function getCartCount() {
 
   return cart.reduce(
-
-    (sum, item) =>
-      sum + item.qty,
-
+    (sum, item) => sum + item.qty,
     0
-
   );
 
 }
@@ -317,12 +291,8 @@ function getCartCount() {
 function getCartTotal() {
 
   return cart.reduce(
-
-    (sum, item) =>
-      sum + item.price * item.qty,
-
+    (sum, item) => sum + item.price * item.qty,
     0
-
   );
 
 }
@@ -332,47 +302,39 @@ function getCartTotal() {
 
 function addToCart(index) {
 
-  const item =
-    food[index];
+  const item = food[index];
 
   if (!item) return;
 
-
-  const existing =
-    cart.find(
-      x => x.name === item.name
-    );
-
+  const existing = cart.find(
+    x => x.name === item.name
+  );
 
   if (existing) {
 
     existing.qty++;
 
-  }
-
-  else {
+  } else {
 
     cart.push({
-
       ...item,
-
       qty: 1
-
     });
 
   }
 
+  /*
+    IMPORTANT:
+    Cart will NOT open automatically.
+
+    Customer can continue selecting
+    multiple food items first.
+  */
 
   showToast(
-
     `${item.name} added • ` +
-
     `${getCartCount()} item(s) in cart`
-
   );
-
-
-  openCart();
 
 }
 
@@ -383,29 +345,21 @@ function changeCartQty(index, change) {
 
   if (!cart[index]) return;
 
-
   cart[index].qty += change;
 
-
   if (cart[index].qty <= 0) {
-
     cart.splice(index, 1);
-
   }
-
 
   if (!cart.length) {
 
     closeModal();
 
-    showToast(
-      "Your cart is empty."
-    );
+    showToast("Your cart is empty.");
 
     return;
 
   }
-
 
   openCart();
 
@@ -418,13 +372,9 @@ function removeCartItem(index) {
 
   if (!cart[index]) return;
 
-
-  const itemName =
-    cart[index].name;
-
+  const itemName = cart[index].name;
 
   cart.splice(index, 1);
-
 
   if (!cart.length) {
 
@@ -438,7 +388,6 @@ function removeCartItem(index) {
 
   }
 
-
   openCart();
 
 }
@@ -450,18 +399,13 @@ function openCart() {
 
   if (!cart.length) {
 
-    showToast(
-      "Your cart is empty."
-    );
+    showToast("Your cart is empty.");
 
     return;
 
   }
 
-
-  const total =
-    getCartTotal();
-
+  const total = getCartTotal();
 
   modalContent.innerHTML = `
 
@@ -469,11 +413,9 @@ function openCart() {
       FOOD ORDER
     </span>
 
-
     <h2>
       Your Order
     </h2>
-
 
     <div class="cart-items">
 
@@ -502,13 +444,10 @@ function openCart() {
                 opacity:.75;
               "
             >
-
               ₹${item.price} each
-
             </div>
 
           </div>
-
 
           <div
             style="
@@ -526,7 +465,6 @@ function openCart() {
               −
             </button>
 
-
             <b
               style="
                 min-width:22px;
@@ -536,7 +474,6 @@ function openCart() {
               ${item.qty}
             </b>
 
-
             <button
               type="button"
               class="add"
@@ -544,7 +481,6 @@ function openCart() {
             >
               +
             </button>
-
 
             <button
               type="button"
@@ -556,7 +492,6 @@ function openCart() {
 
           </div>
 
-
           <b>
             ₹${item.price * item.qty}
           </b>
@@ -566,7 +501,6 @@ function openCart() {
       `).join("")}
 
     </div>
-
 
     <div
       class="total"
@@ -587,19 +521,15 @@ function openCart() {
 
     </div>
 
-
     <div class="demo-note">
 
-      Payment gateway is OFF.
-
-      Your order request will be sent
-      to Harsh Garden on WhatsApp.
+      Select all your food items first.
+      Then review your cart and place
+      the final order on WhatsApp.
 
     </div>
 
-
     <div class="form-grid">
-
 
       <input
         id="custName"
@@ -607,13 +537,11 @@ function openCart() {
         placeholder="Customer Name *"
       >
 
-
       <input
         id="custMobile"
         placeholder="Mobile Number *"
         inputmode="numeric"
       >
-
 
       <input
         id="custAddress"
@@ -621,9 +549,7 @@ function openCart() {
         placeholder="Room / Table / Delivery Address *"
       >
 
-
     </div>
-
 
     <button
       class="btn primary"
@@ -633,13 +559,10 @@ function openCart() {
       "
       onclick="placeDemoOrder()"
     >
-
       📲 Order on WhatsApp
-
     </button>
 
   `;
-
 
   openModal();
 
@@ -659,7 +582,6 @@ function placeDemoOrder() {
   const address =
     getElement("custAddress")?.value.trim();
 
-
   if (
     !name ||
     !mobile ||
@@ -674,18 +596,16 @@ function placeDemoOrder() {
 
   }
 
-
-  const total =
-    getCartTotal();
-
+  const total = getCartTotal();
 
   let message =
-
 `🍽️ *HARSH GARDEN - NEW FOOD ORDER*
 
-👤 Customer Name: ${name}
+👤 Customer Name:
+${name}
 
-📱 Mobile: ${mobile}
+📱 Mobile:
+${mobile}
 
 📍 Room / Table / Address:
 ${address}
@@ -694,18 +614,14 @@ ${address}
 
 `;
 
-
   cart.forEach(item => {
 
     message +=
-
       `• ${item.name} × ${item.qty} = ₹${item.price * item.qty}\n`;
 
   });
 
-
   message +=
-
 `
 💰 *TOTAL AMOUNT: ₹${total}*
 
@@ -714,15 +630,11 @@ Please confirm my food order.
 Thank you!
 `;
 
-
   sendToWhatsApp(message);
-
 
   cart = [];
 
-
   closeModal();
-
 
   showToast(
     "✓ Order details opened in WhatsApp."
@@ -737,9 +649,7 @@ function renderRooms() {
 
   if (!roomCards) return;
 
-
   roomCards.innerHTML =
-
     rooms.map((room, index) => {
 
       return `
@@ -754,18 +664,15 @@ function renderRooms() {
 
           </div>
 
-
           <div class="room-info">
 
             <h3>
               ${room.name}
             </h3>
 
-
             <small>
               ${room.facilities}
             </small>
-
 
             <div class="room-price">
 
@@ -779,14 +686,11 @@ function renderRooms() {
 
               </span>
 
-
               <button
                 class="add"
                 onclick="openRoom(${index})"
               >
-
                 Book
-
               </button>
 
             </div>
@@ -798,7 +702,6 @@ function renderRooms() {
       `;
 
     })
-
     .join("");
 
 }
@@ -808,12 +711,9 @@ function renderRooms() {
 
 function openRoom(index) {
 
-  const room =
-    rooms[index];
-
+  const room = rooms[index];
 
   if (!room) return;
-
 
   modalContent.innerHTML = `
 
@@ -821,16 +721,13 @@ function openRoom(index) {
       ROOM BOOKING
     </span>
 
-
     <h2>
       ${room.name}
     </h2>
 
-
     <p>
       ${room.facilities}
     </p>
-
 
     <div class="demo-note">
 
@@ -842,9 +739,7 @@ function openRoom(index) {
 
     </div>
 
-
     <div class="form-grid">
-
 
       <input
         id="roomName"
@@ -852,13 +747,11 @@ function openRoom(index) {
         placeholder="Guest Full Name *"
       >
 
-
       <input
         id="roomMobile"
         placeholder="Mobile Number *"
         inputmode="numeric"
       >
-
 
       <input
         id="roomGuests"
@@ -866,7 +759,6 @@ function openRoom(index) {
         min="1"
         placeholder="Number of Guests *"
       >
-
 
       <select id="roomShift">
 
@@ -888,30 +780,25 @@ function openRoom(index) {
 
       </select>
 
-
       <input
         type="date"
         id="checkInDate"
       >
-
 
       <input
         type="date"
         id="checkOutDate"
       >
 
-
       <input
         type="time"
         id="roomStartTime"
       >
 
-
       <input
         type="time"
         id="roomEndTime"
       >
-
 
       <input
         id="roomHours"
@@ -920,13 +807,11 @@ function openRoom(index) {
         placeholder="Required Hours *"
       >
 
-
       <input
         id="roomAddress"
         class="full"
         placeholder="Customer Full Address *"
       >
-
 
       <textarea
         id="roomNote"
@@ -935,9 +820,7 @@ function openRoom(index) {
         placeholder="Special Request (optional)"
       ></textarea>
 
-
     </div>
-
 
     <button
       class="btn primary"
@@ -947,13 +830,10 @@ function openRoom(index) {
       "
       onclick="submitRoom('${room.name}')"
     >
-
       📲 Book Room on WhatsApp
-
     </button>
 
   `;
-
 
   openModal();
 
@@ -997,7 +877,6 @@ function submitRoom(roomName) {
   const note =
     getElement("roomNote")?.value.trim();
 
-
   if (
     !name ||
     !mobile ||
@@ -1019,15 +898,12 @@ function submitRoom(roomName) {
 
   }
 
-
   const room =
     rooms.find(
       r => r.name === roomName
     );
 
-
   const message =
-
 `🛏️ *HARSH GARDEN - ROOM BOOKING REQUEST*
 
 🏨 Room Type:
@@ -1075,12 +951,9 @@ price and booking.
 Thank you!
 `;
 
-
   sendToWhatsApp(message);
 
-
   closeModal();
-
 
   showToast(
     "✓ Room booking opened in WhatsApp."
@@ -1099,20 +972,15 @@ function openBanquet() {
       BANQUET / WEDDING HALL
     </span>
 
-
     <h2>
       Plan Your Celebration
     </h2>
 
-
     <p>
-
       Tell us about your event
       and send the complete request
       to Harsh Garden on WhatsApp.
-
     </p>
-
 
     <div class="demo-note">
 
@@ -1121,15 +989,12 @@ function openBanquet() {
 
     </div>
 
-
     <div class="form-grid">
-
 
       <input
         id="eventName"
         placeholder="Customer Full Name *"
       >
-
 
       <input
         id="eventMobile"
@@ -1137,13 +1002,11 @@ function openBanquet() {
         inputmode="numeric"
       >
 
-
       <input
         id="eventAddress"
         class="full"
         placeholder="Full Customer Address *"
       >
-
 
       <select
         id="eventPurpose"
@@ -1188,12 +1051,10 @@ function openBanquet() {
 
       </select>
 
-
       <input
         type="date"
         id="eventDate"
       >
-
 
       <input
         type="number"
@@ -1202,18 +1063,15 @@ function openBanquet() {
         placeholder="Expected Guests *"
       >
 
-
       <input
         type="time"
         id="eventStartTime"
       >
 
-
       <input
         type="time"
         id="eventEndTime"
       >
-
 
       <select id="eventShift">
 
@@ -1235,7 +1093,6 @@ function openBanquet() {
 
       </select>
 
-
       <select id="hallType">
 
         <option>
@@ -1252,7 +1109,6 @@ function openBanquet() {
 
       </select>
 
-
       <textarea
         id="eventRequirements"
         class="full"
@@ -1260,9 +1116,7 @@ function openBanquet() {
         placeholder="Special Requirements: Decoration, Catering, Stage, DJ, Seating etc."
       ></textarea>
 
-
     </div>
-
 
     <button
       class="btn primary"
@@ -1272,13 +1126,10 @@ function openBanquet() {
       "
       onclick="submitBanquet()"
     >
-
       📲 Send Banquet Request on WhatsApp
-
     </button>
 
   `;
-
 
   openModal();
 
@@ -1322,7 +1173,6 @@ function submitBanquet() {
   const requirements =
     getElement("eventRequirements")?.value.trim();
 
-
   if (
     !name ||
     !mobile ||
@@ -1343,9 +1193,7 @@ function submitBanquet() {
 
   }
 
-
   const message =
-
 `🏛️ *HARSH GARDEN - BANQUET BOOKING REQUEST*
 
 👤 Customer Name:
@@ -1387,12 +1235,9 @@ price and booking.
 Thank you!
 `;
 
-
   sendToWhatsApp(message);
 
-
   closeModal();
-
 
   showToast(
     "✓ Banquet request opened in WhatsApp."
@@ -1411,11 +1256,9 @@ function simulateQR(tableNumber = "TABLE 07") {
       SMART TABLE QR
     </span>
 
-
     <h2>
       ${tableNumber}
     </h2>
-
 
     <div
       style="
@@ -1449,21 +1292,15 @@ function simulateQR(tableNumber = "TABLE 07") {
           font-size:72px;
         "
       >
-
         ▦
-
       </div>
 
     </div>
 
-
     <p>
-
       Scan the real QR code on the table
       to open the food menu.
-
     </p>
-
 
     <button
       class="btn primary"
@@ -1476,13 +1313,10 @@ function simulateQR(tableNumber = "TABLE 07") {
           })
       "
     >
-
       Browse Menu
-
     </button>
 
   `;
-
 
   openModal();
 
@@ -1503,17 +1337,11 @@ document
           .querySelectorAll(".filter")
           .forEach(btn => {
 
-            btn.classList.remove(
-              "active"
-            );
+            btn.classList.remove("active");
 
           });
 
-
-        button.classList.add(
-          "active"
-        );
-
+        button.classList.add("active");
 
         renderFood(
           button.dataset.category
@@ -1540,11 +1368,10 @@ document
             button.dataset.scroll
           );
 
-
         if (target) {
 
           target.scrollIntoView({
-            behavior:"smooth"
+            behavior: "smooth"
           });
 
         }
@@ -1560,7 +1387,6 @@ document
 const banquetBtn =
   getElement("banquetBtn");
 
-
 if (banquetBtn) {
 
   banquetBtn.addEventListener(
@@ -1575,7 +1401,6 @@ if (banquetBtn) {
 
 const qrBtn =
   getElement("qrBtn");
-
 
 if (qrBtn) {
 
@@ -1596,7 +1421,6 @@ if (qrBtn) {
 const closeModalButton =
   getElement("closeModal");
 
-
 if (closeModalButton) {
 
   closeModalButton.addEventListener(
@@ -1613,12 +1437,8 @@ if (modal) {
     "click",
     event => {
 
-      if (
-        event.target === modal
-      ) {
-
+      if (event.target === modal) {
         closeModal();
-
       }
 
     }
@@ -1646,10 +1466,8 @@ document
 const menuBtn =
   getElement("menuBtn");
 
-
 const nav =
   getElement("nav");
-
 
 if (
   menuBtn &&
@@ -1660,9 +1478,7 @@ if (
     "click",
     () => {
 
-      nav.classList.toggle(
-        "open"
-      );
+      nav.classList.toggle("open");
 
     }
   );
@@ -1676,12 +1492,8 @@ document.addEventListener(
   "keydown",
   event => {
 
-    if (
-      event.key === "Escape"
-    ) {
-
+    if (event.key === "Escape") {
       closeModal();
-
     }
 
   }
@@ -1691,10 +1503,7 @@ document.addEventListener(
 /* ================= HERO FOOD ================= */
 
 const cardFood =
-  document.querySelector(
-    ".card-food"
-  );
-
+  document.querySelector(".card-food");
 
 if (cardFood) {
 
@@ -1705,7 +1514,7 @@ if (cardFood) {
       document
         .querySelector("#food")
         ?.scrollIntoView({
-          behavior:"smooth"
+          behavior: "smooth"
         });
 
     }
@@ -1717,10 +1526,7 @@ if (cardFood) {
 /* ================= HERO ROOM ================= */
 
 const cardRoom =
-  document.querySelector(
-    ".card-room"
-  );
-
+  document.querySelector(".card-room");
 
 if (cardRoom) {
 
@@ -1731,7 +1537,7 @@ if (cardRoom) {
       document
         .querySelector("#rooms")
         ?.scrollIntoView({
-          behavior:"smooth"
+          behavior: "smooth"
         });
 
     }
@@ -1743,10 +1549,7 @@ if (cardRoom) {
 /* ================= HERO WEDDING ================= */
 
 const cardWed =
-  document.querySelector(
-    ".card-wed"
-  );
-
+  document.querySelector(".card-wed");
 
 if (cardWed) {
 
