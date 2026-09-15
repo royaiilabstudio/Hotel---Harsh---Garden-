@@ -139,19 +139,7 @@ const modal = document.getElementById("modal");
 const modalContent = document.getElementById("modalContent");
 
 /* =====================================================
-   WHATSAPP
-===================================================== */
-
-function sendToWhatsApp(message) {
-
-  const url =
-    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-
-  window.open(url, "_blank");
-}
-
-/* =====================================================
-   HELPERS
+   HELPER
 ===================================================== */
 
 function safe(id) {
@@ -159,13 +147,27 @@ function safe(id) {
 }
 
 function esc(value) {
-
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+/* =====================================================
+   WHATSAPP
+===================================================== */
+
+function sendToWhatsApp(message) {
+
+  const url =
+    "https://wa.me/" +
+    WHATSAPP_NUMBER +
+    "?text=" +
+    encodeURIComponent(message);
+
+  window.open(url, "_blank");
 }
 
 /* =====================================================
@@ -177,16 +179,92 @@ function showToast(text) {
   if (!toast) return;
 
   toast.textContent = text;
-
   toast.classList.add("show");
 
   clearTimeout(window.toastTimer);
 
   window.toastTimer = setTimeout(() => {
-
     toast.classList.remove("show");
-
   }, 3200);
+}
+
+/* =====================================================
+   FLOATING CART BUTTON
+===================================================== */
+
+function showCartButton() {
+
+  let cartButton =
+    document.getElementById("floatingCartButton");
+
+  if (!cartButton) {
+
+    cartButton =
+      document.createElement("button");
+
+    cartButton.id = "floatingCartButton";
+    cartButton.type = "button";
+
+    cartButton.addEventListener(
+      "click",
+      openCart
+    );
+
+    document.body.appendChild(cartButton);
+  }
+
+  cartButton.innerHTML = `
+    <span>🛒 View Cart</span>
+
+    <span style="
+      background:#fff;
+      color:#111;
+      padding:3px 9px;
+      border-radius:20px;
+      font-weight:800;
+      margin-left:6px;
+    ">
+      ${getCartCount()}
+    </span>
+
+    <span style="margin-left:8px;">
+      • Order Now
+    </span>
+  `;
+
+  cartButton.style.cssText = `
+    position:fixed !important;
+    right:16px !important;
+    left:auto !important;
+    bottom:18px !important;
+    transform:none !important;
+    z-index:80 !important;
+    border:none;
+    padding:13px 18px;
+    border-radius:999px;
+    background:#111827;
+    color:#fff;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 12px 35px rgba(0,0,0,.35);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    white-space:nowrap;
+  `;
+}
+
+function hideCartButton() {
+
+  const cartButton =
+    document.getElementById(
+      "floatingCartButton"
+    );
+
+  if (cartButton) {
+    cartButton.remove();
+  }
 }
 
 /* =====================================================
@@ -198,12 +276,27 @@ function openModal() {
   if (modal) {
     modal.classList.add("show");
   }
+
+  /* Prevent floating cart from covering modal */
+  const cartButton =
+    document.getElementById(
+      "floatingCartButton"
+    );
+
+  if (cartButton) {
+    cartButton.style.display = "none";
+  }
 }
 
 function closeModal() {
 
   if (modal) {
     modal.classList.remove("show");
+  }
+
+  /* Show cart again if items are still present */
+  if (cart.length) {
+    showCartButton();
   }
 }
 
@@ -257,7 +350,6 @@ function renderFood(category = "all") {
 
         </article>
       `;
-
     })
     .join("");
 }
@@ -298,7 +390,9 @@ function addToCart(index) {
   if (!item) return;
 
   const existing =
-    cart.find(x => x.name === item.name);
+    cart.find(
+      x => x.name === item.name
+    );
 
   if (existing) {
 
@@ -310,136 +404,13 @@ function addToCart(index) {
       ...item,
       qty: 1
     });
-
   }
 
   showToast(
     `${item.name} added • ${getCartCount()} item(s) in cart`
   );
 
-  /* IMPORTANT:
-     Show floating cart/order button
-     instead of opening modal immediately.
-  */
-
   showCartButton();
-}
-
-/* =====================================================
-   FLOATING CART / ORDER NOW BUTTON
-===================================================== */
-
-function showCartButton() {
-
-  let cartButton =
-    document.getElementById("floatingCartButton");
-
-  if (!cartButton) {
-
-    cartButton =
-      document.createElement("button");
-
-    cartButton.id =
-      "floatingCartButton";
-
-    cartButton.type =
-      "button";
-
-    cartButton.onclick =
-      openCart;
-
-    document.body.appendChild(
-      cartButton
-    );
-  }
-
-  cartButton.innerHTML = `
-
-    <span>
-      🛒 View Cart
-    </span>
-
-    <span
-      style="
-        background:#fff;
-        color:#111;
-        padding:3px 9px;
-        border-radius:20px;
-        font-weight:800;
-        margin-left:6px;
-      "
-    >
-      ${getCartCount()}
-    </span>
-
-    <span
-      style="
-        margin-left:8px;
-      "
-    >
-      • Order Now
-    </span>
-
-  `;
-
-  cartButton.style.cssText = `
-
-    position:fixed;
-
-    left:50%;
-
-    bottom:22px;
-
-    transform:translateX(-50%);
-
-    z-index:99999;
-
-    border:none;
-
-    padding:14px 22px;
-
-    border-radius:999px;
-
-    background:#111827;
-
-    color:#ffffff;
-
-    font-size:16px;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    box-shadow:
-      0 12px 35px rgba(0,0,0,.30);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    white-space:nowrap;
-
-  `;
-}
-
-/* =====================================================
-   HIDE FLOATING CART BUTTON
-===================================================== */
-
-function hideCartButton() {
-
-  const cartButton =
-    document.getElementById(
-      "floatingCartButton"
-    );
-
-  if (cartButton) {
-
-    cartButton.remove();
-
-  }
 }
 
 /* =====================================================
@@ -453,15 +424,12 @@ function changeCartQty(index, change) {
   cart[index].qty += change;
 
   if (cart[index].qty <= 0) {
-
     cart.splice(index, 1);
-
   }
 
   if (!cart.length) {
 
     closeModal();
-
     hideCartButton();
 
     showToast(
@@ -472,7 +440,6 @@ function changeCartQty(index, change) {
   }
 
   showCartButton();
-
   openCart();
 }
 
@@ -484,15 +451,13 @@ function removeCartItem(index) {
 
   if (!cart[index]) return;
 
-  const name =
-    cart[index].name;
+  const name = cart[index].name;
 
   cart.splice(index, 1);
 
   if (!cart.length) {
 
     closeModal();
-
     hideCartButton();
 
     showToast(
@@ -503,7 +468,6 @@ function removeCartItem(index) {
   }
 
   showCartButton();
-
   openCart();
 }
 
@@ -677,7 +641,7 @@ function openCart() {
       class="btn primary"
       style="
         width:100%;
-        margin-top:15px
+        margin-top:15px;
       "
       onclick="placeDemoOrder()"
     >
@@ -704,11 +668,7 @@ function placeDemoOrder() {
   const address =
     safe("custAddress")?.value.trim();
 
-  if (
-    !name ||
-    !mobile ||
-    !address
-  ) {
+  if (!name || !mobile || !address) {
 
     showToast(
       "Please fill all required details."
@@ -760,7 +720,6 @@ Thank you!
   cart = [];
 
   hideCartButton();
-
   closeModal();
 
   showToast(
@@ -782,11 +741,7 @@ function renderRooms() {
       <article class="room-card">
 
         <div class="room-art">
-
-          <span>
-            ${room.icon}
-          </span>
-
+          <span>${room.icon}</span>
         </div>
 
         <div class="room-info">
@@ -950,9 +905,9 @@ function openRoom(index) {
       class="btn primary"
       style="
         width:100%;
-        margin-top:15px
+        margin-top:15px;
       "
-      onclick="submitRoom('${esc(room.name)}')"
+      onclick="submitRoom(${index})"
     >
       📲 Book Room on WhatsApp
     </button>
@@ -966,7 +921,12 @@ function openRoom(index) {
    SUBMIT ROOM BOOKING
 ===================================================== */
 
-function submitRoom(roomName) {
+function submitRoom(index) {
+
+  const room =
+    rooms[index];
+
+  if (!room) return;
 
   const name =
     safe("roomName")?.value.trim();
@@ -1021,15 +981,10 @@ function submitRoom(roomName) {
     return;
   }
 
-  const room =
-    rooms.find(
-      r => r.name === roomName
-    );
-
   const message =
 `🛏️ *HARSH GARDEN - ROOM BOOKING REQUEST*
 
-🏨 Room: ${roomName}
+🏨 Room: ${room.name}
 
 👤 Guest Name: ${name}
 📱 Mobile: ${mobile}
@@ -1050,7 +1005,7 @@ ${address}
 ${note || "None"}
 
 💰 Listed Room Rate:
-₹${room ? room.price : "N/A"} / night
+₹${room.price} / night
 
 Please confirm availability and booking.
 
@@ -1124,37 +1079,14 @@ function openBanquet() {
           Select Event Purpose *
         </option>
 
-        <option>
-          Wedding
-        </option>
-
-        <option>
-          Birthday Party
-        </option>
-
-        <option>
-          Sagun / Tilak
-        </option>
-
-        <option>
-          Reception
-        </option>
-
-        <option>
-          Engagement
-        </option>
-
-        <option>
-          Anniversary
-        </option>
-
-        <option>
-          Corporate Event
-        </option>
-
-        <option>
-          Other Event
-        </option>
+        <option>Wedding</option>
+        <option>Birthday Party</option>
+        <option>Sagun / Tilak</option>
+        <option>Reception</option>
+        <option>Engagement</option>
+        <option>Anniversary</option>
+        <option>Corporate Event</option>
+        <option>Other Event</option>
 
       </select>
 
@@ -1186,33 +1118,17 @@ function openBanquet() {
           Select Shift *
         </option>
 
-        <option>
-          Day Shift
-        </option>
-
-        <option>
-          Evening Shift
-        </option>
-
-        <option>
-          Night Shift
-        </option>
+        <option>Day Shift</option>
+        <option>Evening Shift</option>
+        <option>Night Shift</option>
 
       </select>
 
       <select id="hallType">
 
-        <option>
-          Wedding Hall
-        </option>
-
-        <option>
-          Birthday / Party Hall
-        </option>
-
-        <option>
-          Banquet Hall
-        </option>
+        <option>Wedding Hall</option>
+        <option>Birthday / Party Hall</option>
+        <option>Banquet Hall</option>
 
       </select>
 
@@ -1230,7 +1146,7 @@ function openBanquet() {
       class="btn primary"
       style="
         width:100%;
-        margin-top:15px
+        margin-top:15px;
       "
       onclick="submitBanquet()"
     >
@@ -1341,9 +1257,7 @@ Thank you!
    QR TABLE SYSTEM
 ===================================================== */
 
-function simulateQR(
-  tableNumber = "TABLE 07"
-) {
+function simulateQR(tableNumber = "TABLE 07") {
 
   modalContent.innerHTML = `
 
@@ -1393,13 +1307,11 @@ function simulateQR(
     </div>
 
     <p>
-
       Scan the real QR code on the
       table to open the food menu.
 
       This visual is only the
       website demo representation.
-
     </p>
 
     <button
@@ -1410,7 +1322,7 @@ function simulateQR(
         document.querySelector('#food')
           ?.scrollIntoView({
             behavior:'smooth'
-          })
+          });
       "
     >
       Browse Menu
@@ -1422,7 +1334,7 @@ function simulateQR(
 }
 
 /* =====================================================
-   FOOD FILTER BUTTONS
+   FOOD FILTERS
 ===================================================== */
 
 document
@@ -1436,28 +1348,21 @@ document
         document
           .querySelectorAll(".filter")
           .forEach(btn => {
-
-            btn.classList.remove(
-              "active"
-            );
-
+            btn.classList.remove("active");
           });
 
-        button.classList.add(
-          "active"
-        );
+        button.classList.add("active");
 
         renderFood(
           button.dataset.category
         );
-
       }
     );
 
   });
 
 /* =====================================================
-   SERVICE SCROLL BUTTONS
+   SERVICE SCROLL
 ===================================================== */
 
 document
@@ -1519,7 +1424,7 @@ if (qrBtn) {
 }
 
 /* =====================================================
-   CLOSE MODAL BUTTON
+   CLOSE MODAL
 ===================================================== */
 
 const closeBtn =
@@ -1544,12 +1449,8 @@ if (modal) {
     "click",
     event => {
 
-      if (
-        event.target === modal
-      ) {
-
+      if (event.target === modal) {
         closeModal();
-
       }
 
     }
@@ -1582,18 +1483,13 @@ const menuBtn =
 const nav =
   safe("nav");
 
-if (
-  menuBtn &&
-  nav
-) {
+if (menuBtn && nav) {
 
   menuBtn.addEventListener(
     "click",
     () => {
 
-      nav.classList.toggle(
-        "open"
-      );
+      nav.classList.toggle("open");
 
     }
   );
@@ -1608,12 +1504,8 @@ document.addEventListener(
   "keydown",
   event => {
 
-    if (
-      event.key === "Escape"
-    ) {
-
+    if (event.key === "Escape") {
       closeModal();
-
     }
 
   }
@@ -1624,9 +1516,7 @@ document.addEventListener(
 ===================================================== */
 
 const cardFood =
-  document.querySelector(
-    ".card-food"
-  );
+  document.querySelector(".card-food");
 
 if (cardFood) {
 
@@ -1650,9 +1540,7 @@ if (cardFood) {
 ===================================================== */
 
 const cardRoom =
-  document.querySelector(
-    ".card-room"
-  );
+  document.querySelector(".card-room");
 
 if (cardRoom) {
 
@@ -1676,9 +1564,7 @@ if (cardRoom) {
 ===================================================== */
 
 const cardWed =
-  document.querySelector(
-    ".card-wed"
-  );
+  document.querySelector(".card-wed");
 
 if (cardWed) {
 
@@ -1694,16 +1580,8 @@ if (cardWed) {
 ===================================================== */
 
 renderFood();
-
 renderRooms();
 
 /* =====================================================
-   IMPORTANT
-
-   This script opens WhatsApp with a
-   pre-filled message.
-
-   Customer must press SEND
-   in WhatsApp.
-
+   END
 ===================================================== */
